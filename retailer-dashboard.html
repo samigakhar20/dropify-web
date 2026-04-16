@@ -52,7 +52,19 @@
         <button class="btn-close" onclick="closeModal()">Cancel</button>
     </div>
 </div>
-
+<div id="orderDetailsModal" class="modal">
+    <div class="modal-content">
+        <span onclick="document.getElementById('orderDetailsModal').style.display='none'" style="float:right; cursor:pointer;">&times;</span>
+        <h3>📦 Order Details</h3>
+        <hr>
+        <p><strong>Order ID:</strong> <span id="detId"></span></p>
+        <p><strong>Customer:</strong> <span id="detName"></span></p>
+        <p><strong>Phone:</strong> <span id="detPhone"></span></p>
+        <p><strong>Address:</strong> <span id="detAddress"></span></p>
+        <p><strong>Product:</strong> <span id="detProduct"></span></p>
+        <p><strong>Total Amount:</strong> PKR <span id="detAmount"></span></p>
+    </div>
+</div>
 <div class="dashboard">
     <aside class="sidebar">
         <img src="logo.png" alt="Logo" style="width: 150px; margin-bottom: 20px;">
