@@ -53,27 +53,39 @@ function showMarketDetails(id, p) {
 // --- 3. ORDER PLACE KARNA ---
 async function placeOrder(productId, p) {
     const retailerId = auth.currentUser.uid;
-    const orderBtn = document.getElementById("orderBtn");
+    
+    // Form se values lena
+    const cName = document.getElementById("custName").value;
+    const cPhone = document.getElementById("custPhone").value;
+    const cAddress = document.getElementById("custAddress").value;
 
-    orderBtn.innerText = "Processing...";
-    orderBtn.disabled = true;
+    if(!cName || !cPhone || !cAddress) {
+        alert("Please fill all fields!");
+        return;
+    }
 
     try {
-        // "orders" collection mein naya order save karna
         await db.collection("orders").add({
             productId: productId,
             productName: p.name,
+            productImage: p.imageUrl,
             amount: Number(p.price),
-            supplierId: p.supplierId, // Taake supplier ko dashboard pe nazar aaye
+            supplierId: p.supplierId, // Ye check karein ke product data mein supplierId mojood ho
             retailerId: retailerId,
+            customerName: cName,
+            customerPhone: cPhone,
+            customerAddress: cAddress,
             status: "pending",
             createdAt: firebase.firestore.FieldValue.serverTimestamp()
         });
 
-        alert("Mubarak ho! Aapka order place ho gaya hai.");
+        alert("Order Successfully Placed!");
         closeRetailerModal();
     } catch (error) {
-        alert("Order fail ho gaya: " + error.message);
+        console.error("Error adding order: ", error);
+        alert("Order Failed: " + error.message);
+    }
+}
     } finally {
         orderBtn.innerText = "Place Order Now";
         orderBtn.disabled = false;
