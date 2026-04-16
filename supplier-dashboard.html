@@ -216,9 +216,20 @@
 <script src="https://www.gstatic.com/firebasejs/9.1.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.1.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.1.1/firebase-firestore-compat.js"></script>
-
 <script src="js/auth.js"></script>
-
 <script src="js/dashboard.js"></script>
+
+<script>
+    function showSection(sectionName) {
+        document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active-section'));
+        document.getElementById(sectionName + '-section').classList.add('active-section');
+        document.querySelectorAll('.sidebar ul li').forEach(li => li.classList.remove('active'));
+        event.currentTarget.classList.add('active');
+        document.getElementById('page-title').innerText = sectionName.charAt(0).toUpperCase() + sectionName.slice(1) + " Dashboard";
+    }
+
+    function openModal() { document.getElementById('addProductModal').style.display = 'block'; }
+    function closeModal() { document.getElementById('addProductModal').style.display = 'none'; }
+</script>
 </body>
 </html>
