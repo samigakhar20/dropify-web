@@ -81,3 +81,30 @@ function logout() {
         window.location.href = "login.html";
     });
 }
+
+function loadInventory(supplierId) {
+    const tableBody = document.querySelector(".main-content table tbody"); // Table body select karein
+    
+    db.collection("products").where("supplierId", "==", supplierId)
+    .onSnapshot((snapshot) => {
+        tableBody.innerHTML = ""; // Purana data saaf karein
+
+        snapshot.forEach((doc) => {
+            const product = doc.data();
+            const row = `
+                <tr>
+                    <td>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <img src="${product.imageUrl}" width="40" height="40" style="border-radius: 5px; object-fit: cover;">
+                            ${product.name}
+                        </div>
+                    </td>
+                    <td>${product.category}</td>
+                    <td>PKR ${product.price}</td>
+                    <td>${product.stock}</td>
+                </tr>
+            `;
+            tableBody.innerHTML += row;
+        });
+    });
+}
