@@ -51,31 +51,33 @@ function loadDashboardData(supplierId) {
         // Stats update
         document.getElementById("stat-total-products").innerText = snapshot.size;
         // loadDashboardData function ke andar orders wala hissa update karein
+// loadDashboardData function ke andar orders snapshot wala hissa
 db.collection("orders").where("supplierId", "==", supplierId)
 .onSnapshot((snapshot) => {
     document.getElementById("stat-total-orders").innerText = snapshot.size;
     
-    let pending = 0;
-    let totalEarnings = 0;
+    let pendingCount = 0;
+    let supplierTotalEarnings = 0;
 
     snapshot.forEach((doc) => {
         const data = doc.data();
         
-        // Pending orders count karna
-        if (data.status === "Pending") {
-            pending++;
+        // 1. Pending orders count
+        if (data.status === "Pending" || data.status === "pending") {
+            pendingCount++;
         }
 
-        // Tamam orders ki price jama karna
-        // Note: 'amount' wo price hai jo supplier ko milni hai
-        if (data.amount) {
-            totalEarnings += Number(data.amount);
-        }
+        // 2. Supplier Earnings Calculation
+        // Hum 'productPrice' (jo 1000 hai) ko use karenge, 'amount' (jo 1500-2000 hai) ko nahi
+        const pricePerUnit = Number(data.productPrice) || 0; 
+        const quantity = Number(data.quantity) || 1; // Agar quantity save nahi ki to default 1
+        
+        supplierTotalEarnings += (pricePerUnit * quantity);
     });
 
-    // Dashboard par stats update karna
-    document.getElementById("stat-pending-orders").innerText = pending;
-    document.getElementById("stat-total-earnings").innerText = "PKR " + totalEarnings;
+    // UI Update
+    document.getElementById("stat-pending-orders").innerText = pendingCount;
+    document.getElementById("stat-total-earnings").innerText = "PKR " + supplierTotalEarnings;
 });
         // Grid update
         const grid = document.getElementById("products-grid");
