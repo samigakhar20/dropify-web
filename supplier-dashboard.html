@@ -160,59 +160,6 @@
         document.getElementById('page-title').innerText = sectionName.charAt(0).toUpperCase() + sectionName.slice(1) + " Dashboard";
     }
 
-    // --- MODAL LOGIC ---
-    function openModal() { document.getElementById('addProductModal').style.display = 'block'; }
-    function closeModal() { document.getElementById('addProductModal').style.display = 'none'; }
-
-    // --- ADD PRODUCT LOGIC ---
-    function addNewProduct() {
-        const name = document.getElementById('pName').value;
-        const cat = document.getElementById('pCat').value;
-        const price = document.getElementById('pPrice').value;
-        const stock = document.getElementById('pStock').value;
-
-        if(!name || !price || !stock) {
-            alert("Please fill all fields!");
-            return;
-        }
-
-        const table = document.getElementById('product-list');
-        const newRow = `
-            <tr style="border-bottom: 1px solid #eee;">
-                <td style="padding: 10px;">📦 ${name}</td>
-                <td>${cat}</td>
-                <td>${Number(price).toLocaleString()}</td>
-                <td>${stock}</td>
-            </tr>`;
-        
-        table.innerHTML += newRow;
-        
-        // Form clear karein aur modal band karein
-        document.getElementById('pName').value = "";
-        document.getElementById('pPrice').value = "";
-        document.getElementById('pStock').value = "";
-        closeModal();
-        
-        // Stats update karein
-        updateStats();
-    }
-
-    // --- STATS LOGIC ---
-    function updateStats() {
-        const productCount = document.querySelectorAll('#product-list tr').length;
-        const orderCount = document.querySelectorAll('#order-list tr').length;
-        let pendingCount = 0;
-        document.querySelectorAll('#order-list .status').forEach(td => {
-            if(td.innerText === 'Pending') pendingCount++;
-        });
-
-        document.getElementById('stat-total-products').innerText = productCount;
-        document.getElementById('stat-total-orders').innerText = orderCount;
-        document.getElementById('stat-pending-orders').innerText = pendingCount;
-    }
-
-    window.onload = updateStats;
-
     function logout(){
         localStorage.removeItem("loggedIn");
         window.location.href = "login.html";
