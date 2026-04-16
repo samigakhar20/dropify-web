@@ -37,33 +37,51 @@ function loadMarketplace() {
 // --- 2. POPUP MEIN DETAILS DIKHANA ---
 function showMarketDetails(id, p) {
     document.getElementById("mName").innerText = p.name;
-    document.getElementById("mPrice").innerText = p.price;
+    
+    // Base price ko sirf reference ke liye dikhayen
+    document.getElementById("mBasePrice").innerText = p.price; 
+    
+    // Input field mein default wahi price bhar dein jo supplier ki hai (Retailer isay edit karega)
+    document.getElementById("custPrice").value = p.price;
+
     const orderBtn = document.getElementById("orderBtn");
     orderBtn.onclick = () => placeOrder(id, p);
+    
     document.getElementById("retailerDetailsModal").style.display = "block";
 }
 
-function closeRetailerModal() {
-    document.getElementById("retailerDetailsModal").style.display = "none";
-}
-
-// --- 3. ORDER PLACE KARNA ---
+// --- ORDER PLACE KARNA ---
 async function placeOrder(productId, p) {
     const retailerId = auth.currentUser.uid;
+    const orderBtn = document.getElementById("orderBtn");
+
     const cName = document.getElementById("custName").value;
     const cPhone = document.getElementById("custPhone").value;
     const cAddress = document.getElementById("custAddress").value;
+    const sellingPrice = document.getElementById("custPrice").value; // Retailer ki apni price
 
-    if(!cName || !cPhone || !cAddress) {
+    if(!cName || !cPhone || !cAddress || !sellingPrice) {
         alert("Please fill all fields!");
         return;
     }
+
+    // Profit calculation (optional: sirf console mein dekhne ke liye)
+    const profit = Number(sellingPrice) - Number(p.price);
+    console.log("Your Profit on this order: PKR " + profit);
+
+    orderBtn.innerText = "Processing...";
+    orderBtn.disabled = true;
 
     try {
         await db.collection("orders").add({
             productId: productId,
             productName: p.name,
-            amount: Number(p.price),
+            productImage: p.imageUrl,
+            
+            // YAHAN TABDEELI HAI: Supplier ki price ki jagah Retailer ki selling price save hogi
+            amount: Number(sellingPrice), 
+            supplierBasePrice: Number(p.price), // Future reference ke liye supplier ki original price bhi save kar len
+            
             supplierId: p.supplierId, 
             retailerId: retailerId,
             customerName: cName,
@@ -72,10 +90,14 @@ async function placeOrder(productId, p) {
             status: "pending",
             createdAt: firebase.firestore.FieldValue.serverTimestamp()
         });
-        alert("Order Placed!");
+
+        alert("Order Placed Successfully at PKR " + sellingPrice);
         closeRetailerModal();
-    } catch (e) {
-        alert("Error: " + e.message);
+    } catch (error) {
+        alert("Error: " + error.message);
+    } finally {
+        orderBtn.innerText = "Confirm & Place Order";
+        orderBtn.disabled = false;
     }
 }
 
