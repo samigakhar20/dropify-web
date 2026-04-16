@@ -71,51 +71,63 @@ function viewProductDetails(productId, p) {
 function closeProductModal() {
     document.getElementById("productViewModal").style.display = "none";
 }
+// Global variable taake placeOrder ko product ka data mil sakay
+let currentProduct = null;
+
 // --- 2. POPUP MEIN DETAILS DIKHANA ---
 function showMarketDetails(id, p) {
+    // Ye line lazmi hai! Product ka sara data save karne ke liye
+    currentProduct = { id, ...p };
+
     document.getElementById("mName").innerText = p.name;
-    
-    // Base price ko sirf reference ke liye dikhayen
     document.getElementById("mBasePrice").innerText = p.price; 
     
-    // Input field mein default wahi price bhar dein jo supplier ki hai (Retailer isay edit karega)
-    document.getElementById("custPrice").value = p.price;
+    // Quantity ko default 1 par set karein
+    document.getElementById("orderQuantity").value = 1;
+    
+    // Selling price mein supplier ki price bhar dein
+    document.getElementById("retailerPrice").value = p.price;
 
     const orderBtn = document.getElementById("orderBtn");
-    orderBtn.onclick = () => placeOrder(id, p);
+    // Sirf function ka naam likhein, (id, p) mat bhejain
+    orderBtn.onclick = placeOrder; 
     
     document.getElementById("retailerDetailsModal").style.display = "block";
 }
 
-
 // --- ORDER PLACE KARNA ---
 async function placeOrder() {
+    // Agar currentProduct khali hai to order nahi hoga
+    if (!currentProduct) {
+        alert("Product data missing!");
+        return;
+    }
+
     const qtyInput = document.getElementById("orderQuantity");
     const sellingPriceInput = document.getElementById("retailerPrice");
     const customerNameInput = document.getElementById("custName");
     const orderBtn = document.getElementById("orderBtn");
 
-    // Quantity aur Prices capture karein
     const qty = Number(qtyInput.value) || 1;
-    const sPrice = Number(sellingPriceInput.value);
-    const basePrice = Number(currentProduct.price); //
-
-    if (!sPrice || !customerNameInput.value || qty < 1) {
-        alert("Please fill all details correctly!");
+    const sellingPrice = Number(sellingPriceInput.value);
+    const customerName = customerNameInput.value;
+    
+    if (!sellingPrice || !customerName || qty < 1) {
+        alert("Please fill all details and valid quantity!");
         return;
     }
 
-    orderBtn.innerText = "Processing...";
+    orderBtn.innerText = "Placing Order...";
     orderBtn.disabled = true;
 
     const orderData = {
         productId: currentProduct.id,
         productName: currentProduct.name,
         supplierId: currentProduct.supplierId,
-        supplierBasePrice: basePrice,           // 1000
-        quantity: qty,                          // e.g., 2
-        amount: sPrice * qty,                   // 2000 * 2 = 4000 (Retailer Total)
-        customerName: customerNameInput.value,
+        supplierBasePrice: Number(currentProduct.price), // 1000
+        quantity: qty,                                   // Nayi field jo humne add ki
+        amount: sellingPrice * qty,                      // Total amount
+        customerName: customerName,
         customerPhone: document.getElementById("custPhone").value,
         customerAddress: document.getElementById("custAddress").value,
         retailerId: auth.currentUser.uid,
@@ -125,15 +137,16 @@ async function placeOrder() {
 
     try {
         await db.collection("orders").add(orderData);
-        alert("Order Placed!");
+        alert("Order Placed Successfully!");
         closeRetailerModal();
-    } catch (e) {
-        alert("Error: " + e.message);
+    } catch (error) {
+        console.error("Order Error:", error);
+        alert("Error: " + error.message);
     } finally {
         orderBtn.innerText = "Confirm Order";
         orderBtn.disabled = false;
     }
-} // <--- Ye bracket lazmi hai yahan
+}
 // --- 4. AUTH INITIALIZATION ---
 auth.onAuthStateChanged((user) => {
     if (user) {
