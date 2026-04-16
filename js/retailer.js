@@ -139,7 +139,6 @@ async function placeOrder() {
         orderBtn.disabled = false;
     }
 } // <--- Ye bracket lazmi hai yahan
-}
 // --- 4. AUTH INITIALIZATION ---
 auth.onAuthStateChanged((user) => {
     if (user) {
