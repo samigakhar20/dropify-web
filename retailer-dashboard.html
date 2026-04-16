@@ -150,58 +150,31 @@
     // NAVIGATION
     function showSection(sectionName) {
         document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active-section'));
-        document.getElementById(sectionName + '-section').classList.add('active-section');
+        const target = document.getElementById(sectionName + '-section');
+        if(target) target.classList.add('active-section');
+        
         document.querySelectorAll('.sidebar ul li').forEach(li => li.classList.remove('active'));
-        event.currentTarget.classList.add('active');
+        if(event) event.currentTarget.classList.add('active');
+        
         document.getElementById('page-title').innerText = "Retailer " + sectionName.charAt(0).toUpperCase() + sectionName.slice(1);
     }
 
-    // MODAL
-    function openModal() { document.getElementById('orderModal').style.display = 'block'; }
-    function closeModal() { document.getElementById('orderModal').style.display = 'none'; }
-
-    // SUBMIT ORDER
-    function submitOrder() {
-        const sup = document.getElementById('ordSupplier').value;
-        const prod = document.getElementById('ordProduct').value;
-        const amt = document.getElementById('ordAmount').value;
-
-        if(!prod || !amt) { alert("Please enter product name and amount!"); return; }
-
-        const table = document.getElementById('order-list');
-        const id = Math.floor(Math.random() * 900) + 200;
-        
-        const newRow = `
-            <tr style="border-bottom:1px solid #eee;">
-                <td style="padding:10px;">#ORD-${id}</td>
-                <td>${sup}</td>
-                <td>${Number(amt).toLocaleString()}</td>
-                <td><span class="status-badge status-active">Active</span></td>
-            </tr>`;
-        
-        table.innerHTML = newRow + table.innerHTML;
-        closeModal();
-        updateStats(); // This will recalculate revenue!
+    function closeRetailerModal() { 
+        document.getElementById('retailerDetailsModal').style.display = 'none'; 
     }
 
-    // STATS & REVENUE CALCULATION
-    function updateStats() {
-        const orderRows = document.querySelectorAll('#order-list tr');
-        const orderCount = orderRows.length;
-        const supplierCount = document.querySelectorAll('#supplier-list tr').length;
-        
-        let activeCount = 0;
-        let totalRevenue = 0;
+    // Modal band karne ke liye bahar click check
+    window.onclick = function(event) {
+        let modal = document.getElementById('retailerDetailsModal');
+        if (event.target == modal) modal.style.display = "none";
+    }
+</script>
 
-        orderRows.forEach(row => {
-            // Active orders count
-            if(row.querySelector('.status-badge').innerText === 'Active') {
-                activeCount++;
-            }
-            // Revenue Sum: Getting amount from 3rd column (index 2)
-            let priceText = row.cells[2].innerText.replace(/,/g, '');
-            totalRevenue += parseInt(priceText) || 0;
-        });
+<script src="https://www.gstatic.com/firebasejs/9.1.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.1.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.1.1/firebase-firestore-compat.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/retailer.js">
 
         document.getElementById('stat-total-orders').innerText = orderCount;
         document.getElementById('stat-total-suppliers').innerText = supplierCount;
@@ -216,10 +189,5 @@
         window.location.href = "login.html";
     }
 </script>
-<script src="https://www.gstatic.com/firebasejs/9.1.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.1.1/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.1.1/firebase-firestore-compat.js"></script>
-<script src="js/auth.js"></script>
-<script src="js/retailer.js"></script>
 </body>
 </html>
