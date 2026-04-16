@@ -90,35 +90,32 @@ function showMarketDetails(id, p) {
 
 // --- ORDER PLACE KARNA ---
 async function placeOrder() {
-    // Input fields ko pakarna
     const qtyInput = document.getElementById("orderQuantity");
     const sellingPriceInput = document.getElementById("retailerPrice");
     const customerNameInput = document.getElementById("custName");
-    
-    // Check karein ke inputs mil rahay hain ya nahi
-    if(!qtyInput || !sellingPriceInput || !customerNameInput) return;
+    const orderBtn = document.getElementById("orderBtn");
 
-    const qty = qtyInput.value;
-    const sellingPrice = sellingPriceInput.value;
-    const customerName = customerNameInput.value;
-    const orderBtn = document.getElementById("orderBtn"); 
+    // Quantity aur Prices capture karein
+    const qty = Number(qtyInput.value) || 1;
+    const sPrice = Number(sellingPriceInput.value);
+    const basePrice = Number(currentProduct.price); //
 
-    if (!sellingPrice || !customerName || qty < 1) {
-        alert("Please fill all details!");
+    if (!sPrice || !customerNameInput.value || qty < 1) {
+        alert("Please fill all details correctly!");
         return;
     }
 
-    orderBtn.innerText = "Placing Order...";
+    orderBtn.innerText = "Processing...";
     orderBtn.disabled = true;
 
     const orderData = {
         productId: currentProduct.id,
         productName: currentProduct.name,
         supplierId: currentProduct.supplierId,
-        supplierBasePrice: Number(currentProduct.price),
-        quantity: Number(qty),                           
-        amount: Number(sellingPrice) * Number(qty),     
-        customerName: customerName,
+        supplierBasePrice: basePrice,           // 1000
+        quantity: qty,                          // e.g., 2
+        amount: sPrice * qty,                   // 2000 * 2 = 4000 (Retailer Total)
+        customerName: customerNameInput.value,
         customerPhone: document.getElementById("custPhone").value,
         customerAddress: document.getElementById("custAddress").value,
         retailerId: auth.currentUser.uid,
@@ -128,13 +125,11 @@ async function placeOrder() {
 
     try {
         await db.collection("orders").add(orderData);
-        alert("Order Placed Successfully!");
-        closeRetailerModal(); // Modal band karne wala sahi function
-    } catch (error) {
-        console.error("Order Error:", error);
-        alert("Error: " + error.message);
+        alert("Order Placed!");
+        closeRetailerModal();
+    } catch (e) {
+        alert("Error: " + e.message);
     } finally {
-        // Brackets check karein, ye 'try' ke foran baad hona chahiye
         orderBtn.innerText = "Confirm Order";
         orderBtn.disabled = false;
     }
