@@ -193,21 +193,15 @@ function loadMyOrders(retailerId) {
 
           snapshot.forEach((doc) => {
               const res = doc.data();
-              const row = `
-                  <tr style="border-bottom: 1px solid #eee;">
-                      <td style="padding:12px;">
-                        <strong>${res.productName}</strong><br>
-                        <small style="color:#888;">ID: ${doc.id.substring(0,8)}...</small>
-                      </td>
-                      <td>${res.customerName}</td>
-                      <td>PKR ${res.amount}</td>
-                      <td>
-                        <span class="status-badge ${res.status === 'pending' ? 'status-active' : 'status-delivered'}">
-                            ${res.status.toUpperCase()}
-                        </span>
-                      </td>
-                  </tr>
-              `;
+              // loadMyOrders function ke andar jahan row banti hai:
+const row = `
+    <tr onclick='showOrderDetails("${doc.id}", ${JSON.stringify(data)})' style="cursor:pointer;">
+        <td><strong>${data.productName}</strong><br><small>ID: ${doc.id.substring(0,8)}...</small></td>
+        <td>${data.customerName}</td>
+        <td>PKR ${data.amount}</td>
+        <td><span class="status-badge">${data.status}</span></td>
+    </tr>
+`;
               orderList.innerHTML += row;
           });
       }, (error) => {
