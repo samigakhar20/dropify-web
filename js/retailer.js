@@ -90,9 +90,14 @@ function showMarketDetails(id, p) {
 
 // --- ORDER PLACE KARNA ---
 async function placeOrder() {
-    const qty = document.getElementById("orderQuantity").value;
-    const sellingPrice = document.getElementById("retailerPrice").value;
-    const customerName = document.getElementById("custName").value;
+    const qtyInput = document.getElementById("orderQuantity");
+    const sellingPriceInput = document.getElementById("retailerPrice");
+    const customerNameInput = document.getElementById("custName");
+    const orderBtn = event.target; // Button ko get karne ka asaan tareeka
+
+    const qty = qtyInput.value;
+    const sellingPrice = sellingPriceInput.value;
+    const customerName = customerNameInput.value;
     
     // Validation
     if (!sellingPrice || !customerName || qty < 1) {
@@ -100,14 +105,18 @@ async function placeOrder() {
         return;
     }
 
-    // currentProduct wo variable hai jis mein product ka data store hota hai jab modal khulta hai
+    // Button loading state
+    orderBtn.innerText = "Placing Order...";
+    orderBtn.disabled = true;
+
+    // currentProduct check
     const orderData = {
         productId: currentProduct.id,
         productName: currentProduct.name,
         supplierId: currentProduct.supplierId,
-        supplierBasePrice: Number(currentProduct.price), // Original price: 1000
-        quantity: Number(qty),                           // Selected quantity
-        amount: Number(sellingPrice) * Number(qty),     // Total amount for retailer (e.g. 1500 * 2)
+        supplierBasePrice: Number(currentProduct.price), // 1000 PKR
+        quantity: Number(qty),                           
+        amount: Number(sellingPrice) * Number(qty),     
         customerName: customerName,
         customerPhone: document.getElementById("custPhone").value,
         customerAddress: document.getElementById("custAddress").value,
@@ -119,21 +128,23 @@ async function placeOrder() {
     try {
         await db.collection("orders").add(orderData);
         alert("Order Placed Successfully!");
-        closeModal();
+        closeModal(); // Jo aapka modal band karne ka main function hai
     } catch (error) {
         console.error("Order Error:", error);
-    }
- finally {
-        orderBtn.innerText = "Confirm & Place Order";
+        alert("Error placing order: " + error.message);
+    } finally {
+        orderBtn.innerText = "Confirm Order";
         orderBtn.disabled = false;
     }
+}
+
+// Function ko hamesha bahar rakhein
 function closeRetailerModal() {
     const modal = document.getElementById("retailerDetailsModal");
     if (modal) {
         modal.style.display = "none";
     }
-}}
-
+}
 // --- 4. AUTH INITIALIZATION ---
 auth.onAuthStateChanged((user) => {
     if (user) {
