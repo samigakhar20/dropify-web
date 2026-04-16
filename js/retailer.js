@@ -115,3 +115,66 @@ auth.onAuthStateChanged((user) => {
         window.location.href = "login.html";
     }
 });
+
+// --- 1. DASHBOARD STATS LOAD KARNA ---
+function loadDashboardStats(retailerId) {
+    db.collection("orders").where("retailerId", "==", retailerId)
+      .onSnapshot((snapshot) => {
+          let total = snapshot.size;
+          let revenue = 0;
+          let active = 0;
+
+          snapshot.forEach(doc => {
+              const data = doc.data();
+              revenue += Number(data.amount || 0);
+              if(data.status === "pending" || data.status === "processing") {
+                  active++;
+              }
+          });
+
+          // UI update karna
+          document.getElementById("stat-total-orders").innerText = total;
+          document.getElementById("stat-active-orders").innerText = active;
+          document.getElementById("stat-total-revenue").innerText = "PKR " + revenue;
+      });
+}
+
+// --- 2. MY ORDERS TABLE LOAD KARNA ---
+function loadMyOrders(retailerId) {
+    const orderList = document.getElementById("order-list");
+    if (!orderList) return;
+
+    db.collection("orders")
+      .where("retailerId", "==", retailerId)
+      .orderBy("createdAt", "desc") // Naya order sab se upar
+      .onSnapshot((snapshot) => {
+          orderList.innerHTML = "";
+          
+          if (snapshot.empty) {
+              orderList.innerHTML = "<tr><td colspan='4' style='text-align:center; padding:20px;'>Abhi tak koi order nahi hai.</td></tr>";
+              return;
+          }
+
+          snapshot.forEach((doc) => {
+              const res = doc.data();
+              const row = `
+                  <tr style="border-bottom: 1px solid #eee;">
+                      <td style="padding:12px;">
+                        <strong>${res.productName}</strong><br>
+                        <small style="color:#888;">ID: ${doc.id.substring(0,8)}...</small>
+                      </td>
+                      <td>${res.customerName}</td>
+                      <td>PKR ${res.amount}</td>
+                      <td>
+                        <span class="status-badge ${res.status === 'pending' ? 'status-active' : 'status-delivered'}">
+                            ${res.status.toUpperCase()}
+                        </span>
+                      </td>
+                  </tr>
+              `;
+              orderList.innerHTML += row;
+          });
+      }, (error) => {
+          console.error("Orders Load Error: ", error);
+      });
+}
