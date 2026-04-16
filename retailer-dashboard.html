@@ -154,26 +154,28 @@
     </div>
 </div>
 <div id="retailerDetailsModal" class="modal">
-    <div class="modal-content">
-        <h3 id="mName">Product Name</h3>
-        <p>Supplier Price: PKR <span id="mBasePrice">0</span></p>
-        <hr>
+    <div class="modal-content" style="max-width: 450px; border-radius: 12px; padding: 25px;">
+        <h3 id="mName" style="margin-top: 0;">Product Name</h3>
+        <p style="color: #666;">Supplier Price: PKR <span id="mBasePrice">0</span></p>
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;">
 
-        <div style="margin-bottom: 10px;">
-            <label><b>Quantity:</b></label>
-            <input type="number" id="orderQuantity" value="1" min="1" style="width: 100%; padding: 8px; margin-top: 5px;">
+        <div style="margin-bottom: 12px;">
+            <label style="display: block; font-weight: bold; margin-bottom: 5px;">Quantity:</label>
+            <input type="number" id="orderQuantity" value="1" min="1" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
         </div>
 
-        <label><b>Your Selling Price (Per Unit):</b></label>
-        <input type="number" id="retailerPrice" placeholder="Enter Price per item">
+        <div style="margin-bottom: 12px;">
+            <label style="display: block; font-weight: bold; margin-bottom: 5px;">Your Selling Price (Per Unit):</label>
+            <input type="number" id="retailerPrice" placeholder="Enter Price" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
+        </div>
         
-        <input type="text" id="custName" placeholder="Customer Name">
-        <input type="text" id="custPhone" placeholder="Customer Phone">
-        <textarea id="custAddress" placeholder="Delivery Address"></textarea>
+        <input type="text" id="custName" placeholder="Customer Name" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; margin-bottom: 12px;">
+        <input type="text" id="custPhone" placeholder="Customer Phone" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; margin-bottom: 12px;">
+        <textarea id="custAddress" placeholder="Full Delivery Address" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; margin-bottom: 15px; height: 80px;"></textarea>
 
-        <div class="modal-btns">
-            <button class="btn-cancel" onclick="closeRetailerModal()">Cancel</button>
-            <button class="btn-save" id="orderBtn">Confirm Order</button>
+        <div style="display: flex; gap: 10px;">
+            <button onclick="closeRetailerModal()" style="flex: 1; padding: 12px; background: #6c757d; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">Cancel</button>
+            <button id="orderBtn" onclick="placeOrder()" style="flex: 2; padding: 12px; background: #28a745; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">Confirm Order</button>
         </div>
     </div>
 </div>
