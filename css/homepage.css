@@ -308,6 +308,10 @@ body {
     border-right: 3px solid #ff8800;
     padding-right: 5px;
     animation: blink 0.7s infinite;
+    display: inline-block;
+    overflow: hidden; /* Ye zaroori hai */
+    white-space: nowrap;
+    width: fit-content;
 }
 
 /* Cursor blink */
