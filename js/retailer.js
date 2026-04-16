@@ -236,3 +236,6 @@ function showOrderDetails(orderId, data) {
 function closeOrderModal() {
     document.getElementById("orderDetailsModal").style.display = "none";
 }
+function closeRetailerModal() {
+    document.getElementById("retailerDetailsModal").style.display = "none";
+}
