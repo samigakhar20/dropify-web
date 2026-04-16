@@ -74,6 +74,14 @@ function registerRetailer() {
 }
 
 // --- LOGIN FUNCTION ---
+function logoutUser() {
+    auth.signOut().then(() => {
+        alert("Logged out successfully!");
+        window.location.href = "login.html";
+    }).catch((error) => {
+        alert("Error logging out: " + error.message);
+    });
+}
 function loginUser() {
     const email = document.getElementById('loginEmail').value;
     const password = document.getElementById('loginPassword').value;
