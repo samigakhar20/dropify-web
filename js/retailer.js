@@ -3,7 +3,6 @@ function loadMarketplace() {
     const grid = document.getElementById("market-grid");
     if (!grid) return;
 
-    // "onSnapshot" real-time updates ke liye hai
     db.collection("products").onSnapshot((snapshot) => {
         grid.innerHTML = ""; 
         if (snapshot.empty) {
@@ -13,9 +12,7 @@ function loadMarketplace() {
 
         snapshot.forEach((doc) => {
             const p = doc.data();
-            const productId = doc.id; // Firebase Document ID order ke liye zaroori hai
-
-            // Card Design: JSON.stringify ko clean karne ke liye replace use kiya hai
+            const productId = doc.id;
             const productData = JSON.stringify(p).replace(/'/g, "&apos;");
 
             const card = `
@@ -32,29 +29,30 @@ function loadMarketplace() {
             `;
             grid.innerHTML += card;
         });
+        console.log("Products loaded successfully!");
     });
 }
 
 // --- 2. POPUP MEIN DETAILS DIKHANA ---
 function showMarketDetails(id, p) {
-    document.getElementById("mImg").src = p.imageUrl;
-    document.getElementById("mName").innerText = p.name;
-    document.getElementById("mDesc").innerText = p.description || "No description provided.";
-    document.getElementById("mPrice").innerText = p.price;
-    document.getElementById("mStock").innerText = "Stock Available: " + p.stock;
+    // Check if elements exist before setting values
+    if(document.getElementById("mName")) document.getElementById("mName").innerText = p.name;
+    if(document.getElementById("mPrice")) document.getElementById("mPrice").innerText = p.price;
     
-    // Order button par naya function attach karna jo is product ko identify kare
+    // Order button handling
     const orderBtn = document.getElementById("orderBtn");
-    orderBtn.onclick = () => placeOrder(id, p);
+    if(orderBtn) {
+        orderBtn.onclick = () => placeOrder(id, p);
+    }
     
     document.getElementById("retailerDetailsModal").style.display = "block";
 }
 
-// --- 3. ORDER PLACE KARNA ---
+// --- 3. ORDER PLACE KARNA (Fixed Syntax) ---
 async function placeOrder(productId, p) {
     const retailerId = auth.currentUser.uid;
-    
-    // Form se values lena
+    const orderBtn = document.getElementById("orderBtn");
+
     const cName = document.getElementById("custName").value;
     const cPhone = document.getElementById("custPhone").value;
     const cAddress = document.getElementById("custAddress").value;
@@ -64,13 +62,17 @@ async function placeOrder(productId, p) {
         return;
     }
 
+    // Button UI Update
+    orderBtn.innerText = "Processing...";
+    orderBtn.disabled = true;
+
     try {
         await db.collection("orders").add({
             productId: productId,
             productName: p.name,
             productImage: p.imageUrl,
             amount: Number(p.price),
-            supplierId: p.supplierId, // Ye check karein ke product data mein supplierId mojood ho
+            supplierId: p.supplierId, 
             retailerId: retailerId,
             customerName: cName,
             customerPhone: cPhone,
@@ -84,11 +86,11 @@ async function placeOrder(productId, p) {
     } catch (error) {
         console.error("Error adding order: ", error);
         alert("Order Failed: " + error.message);
-    }
-}
     } finally {
-        orderBtn.innerText = "Place Order Now";
-        orderBtn.disabled = false;
+        if(orderBtn) {
+            orderBtn.innerText = "Confirm & Place Order";
+            orderBtn.disabled = false;
+        }
     }
 }
 
@@ -96,34 +98,25 @@ function closeRetailerModal() {
     document.getElementById("retailerDetailsModal").style.display = "none";
 }
 
-// --- 4. AUTH STATUS & DATA INITIALIZATION ---
+// --- 4. AUTH STATUS & INITIALIZATION ---
 auth.onAuthStateChanged((user) => {
     if (user) {
-        console.log("Retailer Active:", user.uid);
         loadMarketplace();
-        // Yahan aap loadOrders(user.uid) bhi add kar sakte hain baad mein
     } else {
         window.location.href = "login.html";
     }
 });
 
-function logout() {
-    auth.signOut().then(() => {
-        window.location.href = "login.html";
+// Search Logic
+const searchBar = document.getElementById("marketSearch");
+if(searchBar) {
+    searchBar.addEventListener("keyup", function() {
+        let value = this.value.toLowerCase();
+        let cards = document.querySelectorAll(".product-card");
+
+        cards.forEach(card => {
+            let name = card.querySelector("h4").innerText.toLowerCase();
+            card.style.display = name.includes(value) ? "" : "none";
+        });
     });
 }
-
-document.getElementById("marketSearch").addEventListener("keyup", function() {
-    let value = this.value.toLowerCase();
-    let cards = document.querySelectorAll(".product-card");
-
-    cards.forEach(card => {
-        // Card ke andar jo product name (h4) hai usay check karein
-        let name = card.querySelector("h4").innerText.toLowerCase();
-        if (name.indexOf(value) > -1) {
-            card.style.display = "";
-        } else {
-            card.style.display = "none";
-        }
-    });
-});
