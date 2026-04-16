@@ -226,3 +226,95 @@ document.getElementById("updateStatusBtn").addEventListener("click", async () =>
         btn.disabled = false;
     }
 });
+
+// --- 4. QUERY MANAGEMENT SYSTEM ---
+
+// Submit New Query
+async function submitQuery() {
+    const product = document.getElementById('queryProduct').value;
+    const action = document.getElementById('queryAction').value;
+    const message = document.getElementById('queryMessage').value;
+    const btn = document.getElementById('submitQueryBtn');
+
+    if (!message) {
+        alert("Please write some details in the message box.");
+        return;
+    }
+
+    btn.innerText = "Submitting...";
+    btn.disabled = true;
+
+    try {
+        await db.collection("queries").add({
+            supplierId: auth.currentUser.uid,
+            productName: product,
+            requestType: action,
+            message: message,
+            status: "Pending", // Default status
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        alert("Query Submitted Successfully!");
+        document.getElementById('queryMessage').value = ""; // Clear form
+        btn.innerText = "Submit Query";
+        btn.disabled = false;
+    } catch (error) {
+        alert("Error: " + error.message);
+        btn.innerText = "Submit Query";
+        btn.disabled = false;
+    }
+}
+
+// Load Queries and Populate Product Dropdown
+function loadQueriesData(supplierId) {
+    // A. Populate Dropdown with Supplier's Products
+    db.collection("products").where("supplierId", "==", supplierId).onSnapshot((snapshot) => {
+        const dropdown = document.getElementById("queryProduct");
+        dropdown.innerHTML = '<option value="General">General (No Product)</option>';
+        snapshot.forEach(doc => {
+            const p = doc.data();
+            dropdown.innerHTML += `<option value="${p.name}">${p.name}</option>`;
+        });
+    });
+
+    // B. Load Query Table
+    db.collection("queries")
+    .where("supplierId", "==", supplierId)
+    .orderBy("createdAt", "desc")
+    .onSnapshot((snapshot) => {
+        const list = document.getElementById("query-list");
+        list.innerHTML = "";
+
+        if (snapshot.empty) {
+            list.innerHTML = "<tr><td colspan='5' style='text-align:center;'>No queries found.</td></tr>";
+            return;
+        }
+
+        snapshot.forEach(doc => {
+            const q = doc.data();
+            const date = q.createdAt ? q.createdAt.toDate().toLocaleDateString() : "Pending...";
+            const statusColor = q.status === "Pending" ? "#ffcc00" : "#28a745";
+
+            const row = `
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 12px;">#${doc.id.substring(0,5)}</td>
+                    <td>${q.productName}</td>
+                    <td>${q.requestType}</td>
+                    <td><b style="color: ${statusColor}">${q.status}</b></td>
+                    <td>${date}</td>
+                </tr>`;
+            list.innerHTML += row;
+        });
+    });
+}
+
+// Update Auth Listener to include Query Loading
+auth.onAuthStateChanged((user) => {
+    if (user) {
+        loadDashboardData(user.uid);
+        loadSupplierOrders(user.uid);
+        loadQueriesData(user.uid); // <--- Add this line
+    } else {
+        window.location.href = "login.html";
+    }
+});
