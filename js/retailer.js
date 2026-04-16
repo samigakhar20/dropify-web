@@ -89,51 +89,41 @@ function showMarketDetails(id, p) {
 
 
 // --- ORDER PLACE KARNA ---
-async function placeOrder(productId, p) {
-    const retailerId = auth.currentUser.uid;
-    const orderBtn = document.getElementById("orderBtn");
-
-    const cName = document.getElementById("custName").value;
-    const cPhone = document.getElementById("custPhone").value;
-    const cAddress = document.getElementById("custAddress").value;
-    const sellingPrice = document.getElementById("custPrice").value; // Retailer ki apni price
-
-    if(!cName || !cPhone || !cAddress || !sellingPrice) {
-        alert("Please fill all fields!");
+async function placeOrder() {
+    const qty = document.getElementById("orderQuantity").value;
+    const sellingPrice = document.getElementById("retailerPrice").value;
+    const customerName = document.getElementById("custName").value;
+    
+    // Validation
+    if (!sellingPrice || !customerName || qty < 1) {
+        alert("Please fill all details and valid quantity!");
         return;
     }
 
-    // Profit calculation (optional: sirf console mein dekhne ke liye)
-    const profit = Number(sellingPrice) - Number(p.price);
-    console.log("Your Profit on this order: PKR " + profit);
-
-    orderBtn.innerText = "Processing...";
-    orderBtn.disabled = true;
+    // currentProduct wo variable hai jis mein product ka data store hota hai jab modal khulta hai
+    const orderData = {
+        productId: currentProduct.id,
+        productName: currentProduct.name,
+        supplierId: currentProduct.supplierId,
+        supplierBasePrice: Number(currentProduct.price), // Original price: 1000
+        quantity: Number(qty),                           // Selected quantity
+        amount: Number(sellingPrice) * Number(qty),     // Total amount for retailer (e.g. 1500 * 2)
+        customerName: customerName,
+        customerPhone: document.getElementById("custPhone").value,
+        customerAddress: document.getElementById("custAddress").value,
+        retailerId: auth.currentUser.uid,
+        status: "pending",
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    };
 
     try {
-        await db.collection("orders").add({
-            productId: productId,
-            productName: p.name,
-            productImage: p.imageUrl,
-            
-            // YAHAN TABDEELI HAI: Supplier ki price ki jagah Retailer ki selling price save hogi
-            amount: Number(sellingPrice), 
-            supplierBasePrice: Number(p.price), // Future reference ke liye supplier ki original price bhi save kar len
-            
-            supplierId: p.supplierId, 
-            retailerId: retailerId,
-            customerName: cName,
-            customerPhone: cPhone,
-            customerAddress: cAddress,
-            status: "pending",
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        });
-
-        alert("Order Placed Successfully at PKR " + sellingPrice);
-        closeRetailerModal();
+        await db.collection("orders").add(orderData);
+        alert("Order Placed Successfully!");
+        closeModal();
     } catch (error) {
-        alert("Error: " + error.message);
-    } finally {
+        console.error("Order Error:", error);
+    }
+} finally {
         orderBtn.innerText = "Confirm & Place Order";
         orderBtn.disabled = false;
     }
