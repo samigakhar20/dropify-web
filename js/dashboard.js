@@ -153,8 +153,9 @@ let currentUpdateOrderId = null;
 function openOrderUpdateModal(orderId, orderData) {
     currentUpdateOrderId = orderId;
     
-    // Details show karna
+    // Details show karna (Order ID ke saath)
     document.getElementById("orderSummary").innerHTML = `
+        <p><b>Order ID:</b> <span style="color: #ff6600; font-family: monospace;">${orderId}</span></p>
         <p><b>Product:</b> ${orderData.productName}</p>
         <p><b>Customer:</b> ${orderData.customerName}</p>
         <p><b>Address:</b> ${orderData.customerAddress}</p>
@@ -162,11 +163,9 @@ function openOrderUpdateModal(orderId, orderData) {
         <p><b>Current Status:</b> <span style="color:#ff6600">${orderData.status}</span></p>
     `;
     
-    // Dropdown mein current status set karna
     document.getElementById("newStatus").value = orderData.status;
     document.getElementById("orderUpdateModal").style.display = "block";
 }
-
 function closeUpdateModal() {
     document.getElementById("orderUpdateModal").style.display = "none";
 }
