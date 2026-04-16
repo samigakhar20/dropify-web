@@ -102,16 +102,26 @@
 </div>
 
 <div id="retailerDetailsModal" class="modal">
-    <div class="modal-content" style="width: 500px; text-align: center;">
-        <span onclick="closeRetailerModal()" style="float:right; cursor:pointer; font-size:24px;">&times;</span>
-        <img id="mImg" src="" style="width: 100%; max-height: 250px; object-fit: contain; border-radius: 10px;">
-        <h2 id="mName" style="margin: 15px 0 5px 0;"></h2>
-        <p id="mDesc" style="text-align: left; color: #555; padding: 0 10px;"></p>
-        <div style="display: flex; justify-content: space-between; padding: 15px; font-weight: bold;">
-            <span>Price: PKR <span id="mPrice"></span></span>
-            <span id="mStock"></span>
+    <div class="modal-content" style="width: 450px;">
+        <span onclick="closeRetailerModal()" style="float:right; cursor:pointer;">&times;</span>
+        <h3 id="mName">Product Name</h3>
+        <hr>
+        <div id="order-form">
+            <label>Full Name:</label>
+            <input type="text" id="custName" placeholder="Enter your name" required>
+            
+            <label>Phone Number:</label>
+            <input type="number" id="custPhone" placeholder="03xxxxxxxxx" required>
+            
+            <label>Shipping Address:</label>
+            <textarea id="custAddress" placeholder="Full Address" style="width:100%; border-radius:5px; border:1px solid #ddd; padding:8px;"></textarea>
+            
+            <div style="margin-top:10px; font-weight:bold;">
+                Price: PKR <span id="mPrice">0</span>
+            </div>
+            
+            <button id="orderBtn" class="btn-order" style="margin-top:15px;">Confirm & Place Order</button>
         </div>
-        <button id="orderBtn" class="btn-order" style="background: #28a745;">Place Order Now</button>
     </div>
 </div>
             <div style="background:white; border-radius:10px; padding:15px; box-shadow:0 4px 10px rgba(0,0,0,0.05);">
