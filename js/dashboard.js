@@ -81,6 +81,16 @@ function logout() {
         window.location.href = "login.html";
     });
 }
+// Dashboard Stats Load karne ka function
+function loadDashboardStats(supplierId) {
+    // Total Products Count
+    db.collection("products").where("supplierId", "==", supplierId)
+    .onSnapshot((snapshot) => {
+        document.getElementById("stat-total-products").innerText = snapshot.size;
+        // Jab stats load ho jayein, tabhi inventory table bharein
+        loadInventory(supplierId);
+    });
+}
 
 function loadInventory(supplierId) {
     const tableBody = document.getElementById("inventory-body"); // Ab ye sahi ID ko dhoonde ga
@@ -95,7 +105,7 @@ function loadInventory(supplierId) {
                 <tr>
                     <td>
                         <div style="display: flex; align-items: center; gap: 10px;">
-                            <img src="${product.imageUrl}" width="40" height="40" style="border-radius: 5px; object-fit: cover;">
+                            <img src="${product.imageurl}" width="40" height="40" style="border-radius: 5px; object-fit: cover;">
                             ${product.name}
                         </div>
                     </td>
