@@ -123,7 +123,7 @@ async function placeOrder() {
     } catch (error) {
         console.error("Order Error:", error);
     }
-} finally {
+ finally {
         orderBtn.innerText = "Confirm & Place Order";
         orderBtn.disabled = false;
     }
@@ -133,7 +133,7 @@ function closeRetailerModal() {
     if (modal) {
         modal.style.display = "none";
     }
-}
+}}
 
 // --- 4. AUTH INITIALIZATION ---
 auth.onAuthStateChanged((user) => {
