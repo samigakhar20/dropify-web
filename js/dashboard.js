@@ -94,33 +94,40 @@ function loadDashboardStats(supplierId) {
 
 function loadInventory(supplierId) {
     const tableBody = document.getElementById("inventory-body");
-    
-    db.collection("products").where("supplierId", "==", supplierId)
+    console.log("Loading inventory for:", supplierId); // Debugging line
+
+    if (!tableBody) return;
+
+    db.collection("products")
+    .where("supplierId", "==", supplierId)
     .onSnapshot((snapshot) => {
-        if (tableBody) {
-            tableBody.innerHTML = ""; 
+        tableBody.innerHTML = ""; 
+        console.log("Products found:", snapshot.size); // Check karein kitne products mile
 
-            if (snapshot.empty) {
-                tableBody.innerHTML = "<tr><td colspan='5' style='text-align:center; padding:20px;'>No products found.</td></tr>";
-                return;
-            }
-
-            snapshot.forEach((doc) => {
-                const product = doc.data();
-                // Ensure field names match Firestore exactly (case-sensitive)
-                const row = `
-                    <tr style="border-bottom: 1px solid #eee;">
-                        <td style="padding: 10px;">
-                            <img src="${product.imageUrl}" width="50" height="50" style="border-radius: 5px; object-fit: cover;" onerror="this.src='https://via.placeholder.com/50'">
-                        </td>
-                        <td>${product.name || 'N/A'}</td>
-                        <td>${product.category || 'N/A'}</td>
-                        <td>PKR ${product.price || 0}</td>
-                        <td>${product.stock || 0}</td>
-                    </tr>
-                `;
-                tableBody.innerHTML += row;
-            });
+        if (snapshot.empty) {
+            tableBody.innerHTML = "<tr><td colspan='5' style='text-align:center; padding:20px;'>No products found in your inventory.</td></tr>";
+            return;
         }
+
+        snapshot.forEach((doc) => {
+            const product = doc.data();
+            // Firestore mein 'imageUrl' (U capital) hai toh wahi use karein
+            const imgPath = product.imageUrl || 'https://via.placeholder.com/50';
+            
+            const row = `
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 10px;">
+                        <img src="${imgPath}" width="50" height="50" style="border-radius: 5px; object-fit: cover;">
+                    </td>
+                    <td>${product.name || 'No Name'}</td>
+                    <td>${product.category || 'N/A'}</td>
+                    <td>PKR ${product.price || 0}</td>
+                    <td>${product.stock || 0}</td>
+                </tr>
+            `;
+            tableBody.innerHTML += row;
+        });
+    }, (error) => {
+        console.error("Error loading inventory:", error);
     });
 }
