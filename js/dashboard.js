@@ -84,7 +84,6 @@ function logout() {
 
 function loadInventory(supplierId) {
     const tableBody = document.getElementById("inventory-body"); // Ab ye sahi ID ko dhoonde ga
-    const tableBody = document.querySelector(".main-content table tbody"); // Table body select karein
     
     db.collection("products").where("supplierId", "==", supplierId)
     .onSnapshot((snapshot) => {
