@@ -110,7 +110,13 @@ function closeRetailerModal() {
 // --- 4. AUTH INITIALIZATION ---
 auth.onAuthStateChanged((user) => {
     if (user) {
+        console.log("Retailer Logged In:", user.uid);
+        
+        // Ye 3 functions lazmi call hone chahiye
         loadMarketplace();
+        loadDashboardStats(user.uid); 
+        loadMyOrders(user.uid);
+        
     } else {
         window.location.href = "login.html";
     }
