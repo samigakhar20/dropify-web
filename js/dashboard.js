@@ -51,30 +51,36 @@ function loadDashboardData(supplierId) {
         // Stats update
         document.getElementById("stat-total-products").innerText = snapshot.size;
         // loadDashboardData function ke andar orders wala hissa update karein
-// loadDashboardData function ke andar orders snapshot wala hissa
-// loadDashboardData function ke andar snapshot loop
-let supplierTotalEarnings = 0;
+// loadDashboardData function ke andar snapshot wala part
+db.collection("orders").where("supplierId", "==", supplierId)
+.onSnapshot((snapshot) => {
+    document.getElementById("stat-total-orders").innerText = snapshot.size;
+    
+    let pendingCount = 0;
+    let supplierTotalEarnings = 0;
 
-snapshot.forEach((doc) => {
-    const data = doc.data();
-    
-    // Status check
-    const currentStatus = (data.status || "").toLowerCase();
-    if (currentStatus === "pending") {
-        pendingCount++;
-    }
+    snapshot.forEach((doc) => {
+        const data = doc.data();
+        
+        // 1. Pending orders count check
+        const currentStatus = (data.status || "").toLowerCase();
+        if (currentStatus === "pending") {
+            pendingCount++;
+        }
 
-    // Earnings Calculation with Quantity Logic
-    // 1. Base Price uthayein (Jo 1000 hai)
-    const basePrice = Number(data.supplierBasePrice) || 0;
-    
-    // 2. Quantity uthayein (Agar retailer ne bheji hai, warna 1 manein)
-    const qty = Number(data.quantity) || 1; 
-    
-    // 3. Multiply kar ke total mein jama karein
-    supplierTotalEarnings += (basePrice * qty);
+        // 2. Earnings Calculation using supplierBasePrice
+        // Hum data.supplierBasePrice use karenge jo database mein 1000 hai
+        const basePrice = Number(data.supplierBasePrice) || 0;
+        
+        // Agar aap quantity future mein add karein to yahan multiply kar saktay hain
+        // Filhal 1 order = 1 quantity assume ho rahi hai
+        supplierTotalEarnings += basePrice;
+    });
+
+    // UI update
+    document.getElementById("stat-pending-orders").innerText = pendingCount;
+    document.getElementById("stat-total-earnings").innerText = "PKR " + supplierTotalEarnings;
 });
-
 // UI Update
 document.getElementById("stat-total-earnings").innerText = "PKR " + supplierTotalEarnings;
     // UI Update
