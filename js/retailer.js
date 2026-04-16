@@ -90,31 +90,32 @@ function showMarketDetails(id, p) {
 
 // --- ORDER PLACE KARNA ---
 async function placeOrder() {
+    // Input fields ko pakarna
     const qtyInput = document.getElementById("orderQuantity");
     const sellingPriceInput = document.getElementById("retailerPrice");
     const customerNameInput = document.getElementById("custName");
-    const orderBtn = event.target; // Button ko get karne ka asaan tareeka
+    
+    // Check karein ke inputs mil rahay hain ya nahi
+    if(!qtyInput || !sellingPriceInput || !customerNameInput) return;
 
     const qty = qtyInput.value;
     const sellingPrice = sellingPriceInput.value;
     const customerName = customerNameInput.value;
-    
-    // Validation
+    const orderBtn = document.getElementById("orderBtn"); 
+
     if (!sellingPrice || !customerName || qty < 1) {
-        alert("Please fill all details and valid quantity!");
+        alert("Please fill all details!");
         return;
     }
 
-    // Button loading state
     orderBtn.innerText = "Placing Order...";
     orderBtn.disabled = true;
 
-    // currentProduct check
     const orderData = {
         productId: currentProduct.id,
         productName: currentProduct.name,
         supplierId: currentProduct.supplierId,
-        supplierBasePrice: Number(currentProduct.price), // 1000 PKR
+        supplierBasePrice: Number(currentProduct.price),
         quantity: Number(qty),                           
         amount: Number(sellingPrice) * Number(qty),     
         customerName: customerName,
@@ -128,22 +129,16 @@ async function placeOrder() {
     try {
         await db.collection("orders").add(orderData);
         alert("Order Placed Successfully!");
-        closeModal(); // Jo aapka modal band karne ka main function hai
+        closeRetailerModal(); // Modal band karne wala sahi function
     } catch (error) {
         console.error("Order Error:", error);
-        alert("Error placing order: " + error.message);
+        alert("Error: " + error.message);
     } finally {
+        // Brackets check karein, ye 'try' ke foran baad hona chahiye
         orderBtn.innerText = "Confirm Order";
         orderBtn.disabled = false;
     }
-}
-
-// Function ko hamesha bahar rakhein
-function closeRetailerModal() {
-    const modal = document.getElementById("retailerDetailsModal");
-    if (modal) {
-        modal.style.display = "none";
-    }
+} // <--- Ye bracket lazmi hai yahan
 }
 // --- 4. AUTH INITIALIZATION ---
 auth.onAuthStateChanged((user) => {
