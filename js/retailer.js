@@ -242,34 +242,41 @@ function closeRetailerModal() {
 
 let retailerOrders = {}; // To store order details for auto-fill
 
-// Load Orders for Dropdown
+// 1. Orders Load karna (Dropdown ke liye)
 function loadRetailerOrdersForComplaints(retailerId) {
-    db.collection("orders").where("retailerId", "==", retailerId).onSnapshot((snapshot) => {
+    console.log("Fetching orders for retailer:", retailerId); // Debugging ke liye
+    db.collection("orders")
+      .where("retailerId", "==", retailerId)
+      .onSnapshot((snapshot) => {
         const dropdown = document.getElementById("compOrderId");
-        dropdown.innerHTML = '<option value="">-- Select Order --</option>';
+        if (!dropdown) return;
+
+        dropdown.innerHTML = '<option value="">-- Select Order ID --</option>';
+        
+        if (snapshot.empty) {
+            console.log("No orders found for this retailer.");
+            return;
+        }
+
         snapshot.forEach(doc => {
             const data = doc.data();
-            retailerOrders[doc.id] = data.customerName; // Save name for later
-            dropdown.innerHTML += `<option value="${doc.id}">${doc.id.substring(0,8)}... (${data.productName})</option>`;
+            // Dropdown mein Order ID aur Product ka naam show hoga
+            dropdown.innerHTML += `<option value="${doc.id}">${doc.id.substring(0,10)}... (${data.productName || 'Product'})</option>`;
         });
+    }, (error) => {
+        console.error("Error loading orders:", error);
     });
 }
 
-// Auto-fill Client Name
-function fillClientName() {
-    const orderId = document.getElementById("compOrderId").value;
-    document.getElementById("compClientName").value = retailerOrders[orderId] || "";
-}
-
-// Submit Complaint
+// 2. Submit Complaint (Ab manual name ke saath)
 async function submitComplaint() {
     const orderId = document.getElementById("compOrderId").value;
-    const clientName = document.getElementById("compClientName").value;
+    const clientName = document.getElementById("compClientName").value; // Retailer ka likha hua naam
     const message = document.getElementById("compMessage").value;
     const btn = document.getElementById("submitCompBtn");
 
-    if (!orderId || !message) {
-        alert("Please select an order and write a message.");
+    if (!orderId || !clientName || !message) {
+        alert("Bhai/Baaji, saari fields bharna lazmi hain!");
         return;
     }
 
@@ -286,7 +293,9 @@ async function submitComplaint() {
             createdAt: firebase.firestore.FieldValue.serverTimestamp()
         });
 
-        alert("Complaint Filed Successfully!");
+        alert("Complaint filed successfully!");
+        // Form clear karna
+        document.getElementById('compClientName').value = "";
         document.getElementById('compMessage').value = "";
         btn.innerText = "Submit Complaint";
         btn.disabled = false;
