@@ -81,12 +81,6 @@ db.collection("orders").where("supplierId", "==", supplierId)
     document.getElementById("stat-pending-orders").innerText = pendingCount;
     document.getElementById("stat-total-earnings").innerText = "PKR " + supplierTotalEarnings;
 });
-// UI Update
-document.getElementById("stat-total-earnings").innerText = "PKR " + supplierTotalEarnings;
-    // UI Update
-    document.getElementById("stat-pending-orders").innerText = pendingCount;
-    document.getElementById("stat-total-earnings").innerText = "PKR " + supplierTotalEarnings;
-});
         // Grid update
         const grid = document.getElementById("products-grid");
         if (grid) {
