@@ -97,35 +97,27 @@
             <p style="text-align:center; color:#888; margin-top:50px;">Monitor your business performance and marketplace activity.</p>
         </div>
 
-        <div id="suppliers-section" class="content-section" style="padding:20px;">
-            <h3>Top Suppliers</h3>
-            <div style="background:white; border-radius:10px; padding:15px; box-shadow:0 4px 10px rgba(0,0,0,0.05);">
-                <table style="width:100%; border-collapse:collapse; text-align:left;">
-                    <thead>
-                        <tr style="border-bottom:2px solid #f0f0f0;">
-                            <th style="padding:10px;">Supplier</th>
-                            <th>Category</th>
-                            <th>City</th>
-                        </tr>
-                    </thead>
-                    <tbody id="supplier-list">
-                        <tr style="border-bottom:1px solid #eee;"><td><b>Saddar Electronics Hub</b></td><td>Gadgets</td><td>Karachi</td></tr>
-                        <tr style="border-bottom:1px solid #eee;"><td><b>Lahore Textile Mart</b></td><td>Apparel</td><td>Lahore</td></tr>
-                        <tr style="border-bottom:1px solid #eee;"><td><b>Faisalabad Fabrics</b></td><td>Clothing</td><td>Faisalabad</td></tr>
-                        <tr style="border-bottom:1px solid #eee;"><td><b>Pindi Tech Zone</b></td><td>Computers</td><td>Rawalpindi</td></tr>
-                        <tr><td><b>Kashmiri Crafts</b></td><td>Decor</td><td>AJK</td></tr>
-                    </tbody>
-                </table>
-            </div>
+       <div id="suppliers-section" class="content-section" style="padding:20px;">
+    <h3>🛒 Marketplace (Browse Products)</h3>
+    <input type="text" id="marketSearch" placeholder="Search products..." style="width: 100%; padding: 12px; margin-bottom: 20px; border-radius: 8px; border: 1px solid #ddd;">
+    
+    <div id="market-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px;">
         </div>
+</div>
 
-        <div id="orders-section" class="content-section" style="padding:20px;">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-                <h3>Order History</h3>
-                <button onclick="openModal()" style="background:#28a745; color:white; border:none; padding:10px 20px; border-radius:5px; cursor:pointer; font-weight:bold;">
-                    + Place New Order
-                </button>
-            </div>
+<div id="retailerDetailsModal" class="modal">
+    <div class="modal-content" style="width: 500px; text-align: center;">
+        <span onclick="closeRetailerModal()" style="float:right; cursor:pointer; font-size:24px;">&times;</span>
+        <img id="mImg" src="" style="width: 100%; max-height: 250px; object-fit: contain; border-radius: 10px;">
+        <h2 id="mName" style="margin: 15px 0 5px 0;"></h2>
+        <p id="mDesc" style="text-align: left; color: #555; padding: 0 10px;"></p>
+        <div style="display: flex; justify-content: space-between; padding: 15px; font-weight: bold;">
+            <span>Price: PKR <span id="mPrice"></span></span>
+            <span id="mStock"></span>
+        </div>
+        <button id="orderBtn" class="btn-order" style="background: #28a745;">Place Order Now</button>
+    </div>
+</div>
             <div style="background:white; border-radius:10px; padding:15px; box-shadow:0 4px 10px rgba(0,0,0,0.05);">
                 <table style="width:100%; border-collapse:collapse; text-align:left;">
                     <thead>
