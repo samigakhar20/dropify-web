@@ -131,18 +131,66 @@ function loadSupplierOrders(supplierId) {
               const data = doc.data();
               const orderId = doc.id;
 
-              const row = `
-                <tr>
-                    <td>${orderId.substring(0,8)}...</td>
-                    <td>${data.productName}</td>
-                    <td>${data.customerName}</td>
-                    <td>PKR ${data.amount}</td>
-                    <td><span class="status-badge">${data.status}</span></td>
-                </tr>
-              `;
+              
+const row = `
+    <tr onclick='openOrderUpdateModal("${doc.id}", ${JSON.stringify(data)})' style="cursor:pointer;">
+        <td style="padding: 10px;">${orderId.substring(0,8)}...</td>
+        <td>${data.productName}</td>
+        <td>${data.customerName}</td>
+        <td>PKR ${data.amount}</td>
+        <td><span class="status-badge status-${data.status.replace(/\s+/g, '-').toLowerCase()}">${data.status}</span></td>
+    </tr>
+`;
               orderList.innerHTML += row;
           });
       }, (error) => {
           console.error("Supplier Orders Error:", error);
       });
 }
+
+let currentUpdateOrderId = null;
+
+function openOrderUpdateModal(orderId, orderData) {
+    currentUpdateOrderId = orderId;
+    
+    // Details show karna
+    document.getElementById("orderSummary").innerHTML = `
+        <p><b>Product:</b> ${orderData.productName}</p>
+        <p><b>Customer:</b> ${orderData.customerName}</p>
+        <p><b>Address:</b> ${orderData.customerAddress}</p>
+        <p><b>Phone:</b> ${orderData.customerPhone}</p>
+        <p><b>Current Status:</b> <span style="color:#ff6600">${orderData.status}</span></p>
+    `;
+    
+    // Dropdown mein current status set karna
+    document.getElementById("newStatus").value = orderData.status;
+    document.getElementById("orderUpdateModal").style.display = "block";
+}
+
+function closeUpdateModal() {
+    document.getElementById("orderUpdateModal").style.display = "none";
+}
+
+// Update Button Click Listener
+document.getElementById("updateStatusBtn").addEventListener("click", async () => {
+    const selectedStatus = document.getElementById("newStatus").value;
+    const btn = document.getElementById("updateStatusBtn");
+
+    btn.innerText = "Updating...";
+    btn.disabled = true;
+
+    try {
+        await db.collection("orders").doc(currentUpdateOrderId).update({
+            status: selectedStatus,
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        
+        alert("Status updated to: " + selectedStatus);
+        closeUpdateModal();
+    } catch (error) {
+        alert("Error updating status: " + error.message);
+    } finally {
+        btn.innerText = "Update Status";
+        btn.disabled = false;
+    }
+});
