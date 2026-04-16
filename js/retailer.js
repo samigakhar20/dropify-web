@@ -33,23 +33,26 @@ function loadMarketplace() {
         console.error("Firestore Error:", error);
     });
 }
-function viewProductDetails(p) {
-    alert("Product: " + p.name + "\nDescription: " + p.description);
-    // Aap is ke liye bhi ek modal bana sakte hain jaise Order wala banaya.
+// Product Details Modal dikhane ke liye
+function viewProductDetails(productId, p) {
+    document.getElementById("viewPName").innerText = p.name;
+    document.getElementById("viewPImage").src = p.imageUrl;
+    document.getElementById("viewPDesc").innerText = p.description || "No description available.";
+    document.getElementById("viewPPrice").innerText = p.price;
 
-    document.getElementById("marketSearch").addEventListener("input", (e) => {
-    const searchTerm = e.target.value.toLowerCase();
-    const cards = document.querySelectorAll(".product-card");
+    // View modal ke andar "Order Now" button ko functional banayein
+    const viewOrderBtn = document.getElementById("viewOrderBtn");
+    viewOrderBtn.onclick = () => {
+        closeProductModal(); // View modal band karein
+        showMarketDetails(productId, p); // Order modal kholein
+    };
 
-    cards.forEach(card => {
-        const title = card.querySelector("h4").innerText.toLowerCase();
-        if (title.includes(searchTerm)) {
-            card.style.display = "block";
-        } else {
-            card.style.display = "none";
-        }
-    });
-});
+    document.getElementById("productViewModal").style.display = "block";
+}
+
+// View Modal band karne ke liye
+function closeProductModal() {
+    document.getElementById("productViewModal").style.display = "none";
 }
 // --- 2. POPUP MEIN DETAILS DIKHANA ---
 function showMarketDetails(id, p) {
