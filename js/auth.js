@@ -72,3 +72,40 @@ function registerRetailer() {
         alert(error.message);
     });
 }
+
+// --- LOGIN FUNCTION ---
+function loginUser() {
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
+
+    if(!email || !password) {
+        alert("Please enter both email and password.");
+        return;
+    }
+
+    auth.signInWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+        // Login honay ke baad database se user ka 'role' check karna
+        return db.collection("users").doc(userCredential.user.uid).get();
+    })
+    .then((doc) => {
+        if (doc.exists) {
+            const userData = doc.data();
+            console.log("User role found:", userData.role);
+
+            // Role ke mutabiq sahi dashboard par bhejna
+            if (userData.role === "supplier") {
+                window.location.href = "supplier-dashboard.html";
+            } else if (userData.role === "retailer") {
+                window.location.href = "retailer-dashboard.html";
+            } else {
+                alert("Role not defined for this user.");
+            }
+        } else {
+            alert("User data not found in database!");
+        }
+    })
+    .catch((error) => {
+        alert("Login Error: " + error.message);
+    });
+}
