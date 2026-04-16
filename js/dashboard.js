@@ -50,7 +50,33 @@ function loadDashboardData(supplierId) {
     .onSnapshot((snapshot) => {
         // Stats update
         document.getElementById("stat-total-products").innerText = snapshot.size;
+        // loadDashboardData function ke andar orders wala hissa update karein
+db.collection("orders").where("supplierId", "==", supplierId)
+.onSnapshot((snapshot) => {
+    document.getElementById("stat-total-orders").innerText = snapshot.size;
+    
+    let pending = 0;
+    let totalEarnings = 0;
 
+    snapshot.forEach((doc) => {
+        const data = doc.data();
+        
+        // Pending orders count karna
+        if (data.status === "Pending") {
+            pending++;
+        }
+
+        // Tamam orders ki price jama karna
+        // Note: 'amount' wo price hai jo supplier ko milni hai
+        if (data.amount) {
+            totalEarnings += Number(data.amount);
+        }
+    });
+
+    // Dashboard par stats update karna
+    document.getElementById("stat-pending-orders").innerText = pending;
+    document.getElementById("stat-total-earnings").innerText = "PKR " + totalEarnings;
+});
         // Grid update
         const grid = document.getElementById("products-grid");
         if (grid) {
