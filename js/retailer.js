@@ -97,39 +97,34 @@ function showMarketDetails(id, p) {
 
 // --- ORDER PLACE KARNA ---
 async function placeOrder() {
-    // Agar currentProduct khali hai to order nahi hoga
-    if (!currentProduct) {
-        alert("Product data missing!");
-        return;
-    }
-
-    const qtyInput = document.getElementById("orderQuantity");
-    const sellingPriceInput = document.getElementById("retailerPrice");
-    const customerNameInput = document.getElementById("custName");
+    // 1. Elements ko sahi ID se pakrein
+    const qtyVal = document.getElementById("orderQuantity").value;
+    const priceVal = document.getElementById("retailerPrice").value;
+    const nameVal = document.getElementById("custName").value;
+    const phoneVal = document.getElementById("custPhone").value;
+    const addressVal = document.getElementById("custAddress").value;
     const orderBtn = document.getElementById("orderBtn");
 
-    const qty = Number(qtyInput.value) || 1;
-    const sellingPrice = Number(sellingPriceInput.value);
-    const customerName = customerNameInput.value;
-    
-    if (!sellingPrice || !customerName || qty < 1) {
-        alert("Please fill all details and valid quantity!");
+    // 2. Validation Check (Sahi tareekay se)
+    if (!nameVal || !priceVal || !addressVal || Number(qtyVal) < 1) {
+        alert("Please fill all details and enter a valid quantity!");
         return;
     }
 
     orderBtn.innerText = "Placing Order...";
     orderBtn.disabled = true;
 
+    // 3. Order Data Object
     const orderData = {
         productId: currentProduct.id,
         productName: currentProduct.name,
         supplierId: currentProduct.supplierId,
-        supplierBasePrice: Number(currentProduct.price), // 1000
-        quantity: qty,                                   // Nayi field jo humne add ki
-        amount: sellingPrice * qty,                      // Total amount
-        customerName: customerName,
-        customerPhone: document.getElementById("custPhone").value,
-        customerAddress: document.getElementById("custAddress").value,
+        supplierBasePrice: Number(currentProduct.price), // 1000 PKR
+        quantity: Number(qtyVal),
+        amount: Number(priceVal) * Number(qtyVal), // Retailer Total
+        customerName: nameVal,
+        customerPhone: phoneVal,
+        customerAddress: addressVal,
         retailerId: auth.currentUser.uid,
         status: "pending",
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
