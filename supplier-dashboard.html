@@ -41,23 +41,21 @@
     </style>
 </head>
 <body class="supplier">
-
 <div id="addProductModal" class="modal">
     <div class="modal-content">
         <h3>Add New Product</h3>
-        <input type="text" id="pName" placeholder="Product Name (e.g. Sony Headphones)">
-        <select id="pCat">
-            <option value="Electronics">Electronics</option>
-            <option value="Fashion">Fashion</option>
-            <option value="Tech">Tech</option>
-            <option value="Accessories">Accessories</option>
-        </select>
-        <input type="number" id="pPrice" placeholder="Price (PKR)">
-        <input type="number" id="pStock" placeholder="Stock Quantity">
-        
-        <div class="modal-btns">
-            <button class="btn-cancel" onclick="closeModal()">Cancel</button>
-            <button class="btn-save" onclick="addNewProduct()">Save Product</button>
+        <input type="text" id="prodName" placeholder="Product Name" required>
+<select id="prodCategory">
+    <option value="Electronics">Electronics</option>
+    <option value="Fashion">Fashion</option>
+    </select>
+<input type="number" id="prodPrice" placeholder="Price (PKR)" required>
+<input type="number" id="prodStock" placeholder="Stock Quantity" required>
+
+<textarea id="prodDesc" placeholder="Product Description" rows="3" style="width: 100%; margin-top: 10px; border-radius: 5px; border: 1px solid #ccc; padding: 10px;"></textarea>
+<input type="text" id="prodImg" placeholder="Image URL (Link)" style="margin-top: 10px;">
+
+<button type="button" onclick="saveProduct()" id="saveBtn">Save Product</button>
         </div>
     </div>
 </div>
