@@ -16,16 +16,16 @@ function loadMarketplace() {
             const productData = JSON.stringify(p).replace(/'/g, "&apos;");
 
             const card = `
-                <div class="product-card" style="background: white; border-radius: 12px; padding: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
-                    <img src="${p.imageUrl}" style="width: 100%; height: 160px; object-fit: cover; border-radius: 8px;">
-                    <h4>${p.name}</h4>
-                    <p style="color: #28a745; font-weight: bold;">PKR ${p.price}</p>
-                    <button onclick='showMarketDetails("${productId}", ${productData})' 
-                            style="width: 100%; background: #28a745; color: white; border: none; padding: 8px; border-radius: 5px; cursor: pointer;">
-                        View & Order
-                    </button>
-                </div>
-            `;
+    <div class="product-card">
+        <img src="${p.imageUrl}" style="width: 100%; height: 160px; object-fit: cover;">
+        <h4>${p.name}</h4>
+        <p>PKR ${p.price}</p>
+        <div style="display: flex; gap: 5px;">
+            <button onclick='viewProductDetails(${productData})' style="flex:1; background:#6c757d;">View</button>
+            <button onclick='showMarketDetails("${productId}", ${productData})' style="flex:1; background:#28a745;">Order</button>
+        </div>
+    </div>
+`;
             grid.innerHTML += card;
         });
         console.log("Products loaded successfully!");
@@ -33,7 +33,24 @@ function loadMarketplace() {
         console.error("Firestore Error:", error);
     });
 }
+function viewProductDetails(p) {
+    alert("Product: " + p.name + "\nDescription: " + p.description);
+    // Aap is ke liye bhi ek modal bana sakte hain jaise Order wala banaya.
 
+    document.getElementById("marketSearch").addEventListener("input", (e) => {
+    const searchTerm = e.target.value.toLowerCase();
+    const cards = document.querySelectorAll(".product-card");
+
+    cards.forEach(card => {
+        const title = card.querySelector("h4").innerText.toLowerCase();
+        if (title.includes(searchTerm)) {
+            card.style.display = "block";
+        } else {
+            card.style.display = "none";
+        }
+    });
+});
+}
 // --- 2. POPUP MEIN DETAILS DIKHANA ---
 function showMarketDetails(id, p) {
     document.getElementById("mName").innerText = p.name;
