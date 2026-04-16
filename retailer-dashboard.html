@@ -154,9 +154,31 @@
 <script src="js/retailer.js"></script>
 
 <script>
+    // Tab Switching Function (Jo missing tha)
+    function showSection(sectionId) {
+        // 1. Saaray sections hide karo
+        document.querySelectorAll('.content-section').forEach(section => {
+            section.classList.remove('active-section');
+        });
+        // 2. Sirf select kiya gaya section dikhao
+        const target = document.getElementById(sectionId + '-section');
+        if (target) {
+            target.classList.add('active-section');
+        }
+        // 3. Sidebar ki active class update karo
+        document.querySelectorAll('.sidebar ul li').forEach(li => {
+            li.classList.remove('active');
+        });
+        event.currentTarget.classList.add('active');
+        
+        // 4. Page title badlo
+        document.getElementById('page-title').innerText = sectionId.charAt(0).toUpperCase() + sectionId.slice(1);
+    }
+
     function logout(){
-        localStorage.removeItem("loggedIn");
-        window.location.href = "login.html";
+        auth.signOut().then(() => {
+            window.location.href = "login.html";
+        });
     }
 </script>
 </body>
