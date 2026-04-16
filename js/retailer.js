@@ -21,7 +21,7 @@ function loadMarketplace() {
         <h4>${p.name}</h4>
         <p>PKR ${p.price}</p>
         <div style="display: flex; gap: 5px;">
-            <button onclick='viewProductDetails(${productData})' style="flex:1; background:#6c757d;">View</button>
+<button onclick='viewProductDetails("${productId}", ${productData})' style="flex:1; background:#6c757d; color:white; border:none; padding:8px; border-radius:5px; cursor:pointer;">View</button>
             <button onclick='showMarketDetails("${productId}", ${productData})' style="flex:1; background:#28a745;">Order</button>
         </div>
     </div>
