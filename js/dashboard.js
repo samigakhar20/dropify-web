@@ -1,3 +1,50 @@
+async function saveProduct() {
+    const name = document.getElementById('prodName').value;
+    const price = document.getElementById('prodPrice').value;
+    const stock = document.getElementById('prodStock').value;
+    const category = document.getElementById('prodCategory').value;
+    const description = document.getElementById('prodDesc').value;
+    const imageFile = document.getElementById('prodImageFile').files[0];
+    const saveBtn = document.getElementById('saveBtn');
+
+    if (!name || !price || !imageFile) {
+        alert("Please fill Name, Price and select an Image!");
+        return;
+    }
+
+    saveBtn.innerText = "Uploading...";
+    saveBtn.disabled = true;
+
+    // Image ko Text (Base64) mein convert karne ka tareeka
+    const reader = new FileReader();
+    reader.readAsDataURL(imageFile);
+    
+    reader.onload = async () => {
+        const base64Image = reader.result;
+
+        try {
+            await db.collection("products").add({
+                name: name,
+                price: Number(price),
+                stock: Number(stock),
+                category: category,
+                description: description,
+                imageUrl: base64Image, // Ab ye asali image data save hoga
+                supplierId: auth.currentUser.uid,
+                createdAt: new Date()
+            });
+
+            alert("Product Added Successfully!");
+            location.reload(); // Page refresh taake stats update ho jayein
+        } catch (error) {
+            alert("Error: " + error.message);
+            saveBtn.innerText = "Save Product";
+            saveBtn.disabled = false;
+        }
+    };
+}
+
+
 // Dashboard Data Loader
 auth.onAuthStateChanged((user) => {
     if (user) {
