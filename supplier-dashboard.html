@@ -111,18 +111,23 @@
                 </button>
             </div>
             <div style="background: white; border-radius: 10px; padding: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
-               <table style="width: 100%; border-collapse: collapse;">
-    <thead>
-        <tr style="border-bottom: 2px solid #f0f0f0; text-align: left;">
-            <th style="padding: 10px;">Product Image</th> <th>Product Name</th>
-            <th>Category</th>
-            <th>Price</th>
-            <th>Stock</th>
-        </tr>
-    </thead>
-    <tbody id="inventory-body">
-        </tbody>
-</table>
+               <div id="products-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; padding: 10px;">
+    </div>
+
+<div id="detailsModal" class="modal">
+    <div class="modal-content" style="width: 500px; text-align: center;">
+        <span onclick="closeDetailsModal()" style="float:right; cursor:pointer; font-size:24px;">&times;</span>
+        <img id="detImg" src="" style="width: 100%; max-height: 300px; object-fit: contain; border-radius: 10px;">
+        <h2 id="detName" style="margin: 15px 0 5px 0;"></h2>
+        <p id="detCat" style="color: #ff6600; font-weight: bold;"></p>
+        <hr>
+        <p id="detDesc" style="text-align: left; color: #555; line-height: 1.6;"></p>
+        <div style="display: flex; justify-content: space-between; margin-top: 20px; font-weight: bold; background: #f9f9f9; padding: 10px; border-radius: 5px;">
+            <span>Price: PKR <span id="detPrice"></span></span>
+            <span>Stock: <span id="detStock"></span></span>
+        </div>
+    </div>
+</div>
             </div>
         </div>
 
