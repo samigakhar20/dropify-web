@@ -68,7 +68,7 @@
             <li class="active" onclick="showSection('dashboard')">Dashboard</li>
             <li onclick="showSection('products')">Products</li>
             <li onclick="showSection('orders')">Orders</li>
-            <li>Messages</li>
+            <li onclick="showSection('queries')">Queries</li>
             <div class="sidebar-footer">
     <button onclick="logout()">Logout</button>
 </div>
@@ -149,6 +149,47 @@
                 </table>
             </div>
         </div>
+        <div id="queries-section" class="content-section" style="padding: 20px;">
+    <h3>Supplier Support Queries</h3>
+    
+    <div style="background: white; border-radius: 10px; padding: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 20px;">
+        <h4>Submit New Query</h4>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
+            <div>
+                <label>Select Product</label>
+                <select id="queryProduct" style="width:100%; padding:10px; border-radius:5px; border:1px solid #ddd;"></select>
+            </div>
+            <div>
+                <label>Action Required</label>
+                <select id="queryAction" style="width:100%; padding:10px; border-radius:5px; border:1px solid #ddd;">
+                    <option value="Out of Stock">Mark as Out of Stock</option>
+                    <option value="Remove Product">Remove Product</option>
+                    <option value="Order Issue">Order Related Issue</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+        </div>
+        <textarea id="queryMessage" placeholder="Describe your issue or request here..." rows="4" style="width: 100%; margin-top: 15px; border-radius: 5px; border: 1px solid #ddd; padding: 10px; box-sizing: border-box;"></textarea>
+        <button onclick="submitQuery()" id="submitQueryBtn" style="background: #ff6600; color: white; border: none; padding: 12px 25px; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 15px;">Submit Query</button>
+    </div>
+
+    <div style="background: white; border-radius: 10px; padding: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+        <h4>Your Query History</h4>
+        <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+            <thead>
+                <tr style="border-bottom: 2px solid #f0f0f0; text-align: left;">
+                    <th style="padding: 10px;">ID</th>
+                    <th>Product</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody id="query-list">
+                </tbody>
+        </table>
+    </div>
+</div>
         <div id="orderUpdateModal" class="modal">
     <div class="modal-content">
         <h3>Update Order Status</h3>
