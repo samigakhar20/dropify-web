@@ -100,6 +100,12 @@ async function placeOrder(productId, p) {
         orderBtn.disabled = false;
     }
 }
+function closeRetailerModal() {
+    const modal = document.getElementById("retailerDetailsModal");
+    if (modal) {
+        modal.style.display = "none";
+    }
+}
 
 // --- 4. AUTH INITIALIZATION ---
 auth.onAuthStateChanged((user) => {
