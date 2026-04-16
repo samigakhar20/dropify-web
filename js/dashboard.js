@@ -105,7 +105,7 @@ function loadInventory(supplierId) {
                 <tr>
                     <td>
                         <div style="display: flex; align-items: center; gap: 10px;">
-                            <img src="${product.imageurl}" width="40" height="40" style="border-radius: 5px; object-fit: cover;">
+                            <img src="${product.imageUrl}" width="40" height="40" style="border-radius: 5px; object-fit: cover;">
                             ${product.name}
                         </div>
                     </td>
