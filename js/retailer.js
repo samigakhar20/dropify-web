@@ -106,10 +106,10 @@ async function placeOrder() {
     const orderBtn = document.getElementById("orderBtn");
 
     // 2. Validation Check (Sahi tareekay se)
-    if (!nameVal || !priceVal || !addressVal || Number(qtyVal) < 1) {
-        alert("Please fill all details and enter a valid quantity!");
-        return;
-    }
+    if (nameVal === "" || priceVal === "" || addressVal === "" || phoneVal === "" || Number(qtyVal) < 1) {
+    alert("Please fill ALL details, including phone number!");
+    return;
+}
 
     orderBtn.innerText = "Placing Order...";
     orderBtn.disabled = true;
