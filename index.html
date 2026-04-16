@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DROPIFY - Home</title>
+    <link rel="stylesheet" href="css/homepage.css">
+</head>
+
+<body>
+
+   <!-- NAVBAR -->
+<div class="navbar">
+
+    <!-- LEFT: LOGO -->
+    <div class="nav-left">
+        <img src="images/logo.png" class="logo">
+    </div>
+
+    <!-- CENTER: MENU (Desktop) -->
+    <div class="nav-center" id="navMenu">
+
+    <!-- CLOSE BUTTON -->
+    <div class="close-btn" id="closeBtn">✖</div>
+
+        <a href="index.html">HOME</a>
+        <a href="supplier-register.html">BECOME A SUPPLIER</a>
+        <a href="retailer-register.html">REGISTER AS A RETAILER</a>
+        <a href="login.html">LOGIN</a>
+    </div>
+
+    <!-- RIGHT: SEARCH + HAMBURGER -->
+    <div class="nav-right">
+        <input type="text" placeholder="Search Dropify" class="search-box">
+
+        <!-- Hamburger icon -->
+        <div class="hamburger" id="hamburger">
+            ☰
+        </div>
+    </div>
+
+</div>
+    <!-- BANNER ABOUT COMPANY -->
+     <div class="container">
+
+        <div class="left">
+            <h1>Pakistan's First & Biggest <br>Dropshipping Platform</h1>
+
+            <p>
+                Est. 2020, Leading from the front, defining local dropshipping standards 
+                and providing facilities others can't match. Biggest suppliers & biggest team.
+            </p>
+
+            <div class="buttons">
+                <a href="login.html"><button class="btn login">Log In</button></a>
+                <a href="supplier-register.html"><button class="btn register">Register Now</button></a>
+            </div>
+        </div>
+
+        <div class="right">
+            <img src="images/banner1.png" alt="Dropshipping Image">
+        </div>
+
+    </div>
+<div class="hero-section">
+    <h2 class="typing-text">
+        Dropify is the <span id="typewriter"></span>
+    </h2>
+</div>
+
+    <!-- BANNER ABOUT PEOPLE WORKING WITH US -->
+
+    <section class="stats-section">
+    <div class="stats-container">
+
+        <div class="stat-box pink">
+            <i class="icon">⚙️</i>
+            <h2>50+</h2>
+            <p>Staff Members</p>
+        </div>
+
+        <div class="stat-box blue">
+            <i class="icon">📋</i>
+            <h2>40,000+</h2>
+            <p>Registered Dropshippers</p>
+        </div>
+
+        <div class="stat-box yellow">
+            <i class="icon">👍</i>
+            <h2>100+</h2>
+            <p>Suppliers</p>
+        </div>
+
+    </div>
+</section>
+<!-- OUR HUBS SECTION -->
+<section class="hubs-section">
+
+    <!-- TOP HEADING -->
+    <h2 class="hubs-main-title">OUR HUBS</h2>
+
+    <div class="hubs-content">
+
+        <!-- LEFT SIDE IMAGE -->
+        <div class="hubs-left">
+            <img src="images/hubs.png" alt="Hubs Image">
+        </div>
+
+        <!-- RIGHT SIDE CARDS -->
+        <div class="hubs-right">
+
+            <div class="hub-card">
+                <h3>Karachi Hub</h3>
+                <p>Saddar – Sindh Main Dispatch Center</p>
+            </div>
+
+            <div class="hub-card">
+                <h3>Lahore Hub</h3>
+                <p>Punjab Dispatch Operations</p>
+            </div>
+
+            <div class="hub-card">
+                <h3>Islamabad Hub</h3>
+                <p>Ghouri Town – Central Hub</p>
+            </div>
+
+            <div class="hub-card">
+                <h3>Rawalpindi Hub</h3>
+                <p>North Dispatch Center</p>
+            </div>
+
+            <div class="hub-card">
+                <h3>Peshawar Hub</h3>
+                <p>Khyber Dispatch Operations</p>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- FEATURES SECTION -->
+<section class="features-section">
+
+    <h2 class="features-title">FEATURES</h2>
+
+    <div class="features-container">
+
+        <div class="feature-card">
+            <div class="feature-icon">🛒</div>
+            <h3>Easy Product Sourcing</h3>
+            <p>Access thousands of verified products directly from trusted suppliers.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">🔒</div>
+            <h3>Verified Suppliers</h3>
+            <p>All suppliers are verified to ensure quality, reliability and trust.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">⚡</div>
+            <h3>Fast Dispatch</h3>
+            <p>Quick order processing and fast dispatch from local hubs.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">📦</div>
+            <h3>Order Management</h3>
+            <p>Track, manage and fulfill orders easily from one dashboard.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">💬</div>
+            <h3>Direct Communication</h3>
+            <p>Chat directly with suppliers for quick support and coordination.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">📊</div>
+            <h3>Business Insights</h3>
+            <p>Get insights and reports to grow your dropshipping business.</p>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ABOUT DROPIFY SECTION -->
+<section class="about-section">
+
+    <!-- TOP HEADING -->
+    <h2 class="about-title">ABOUT DROPIFY</h2>
+
+    <div class="about-content">
+
+        <!-- LEFT SIDE : TABS + CONTENT -->
+        <div class="about-left">
+
+            <div class="tabs">
+                <button class="tab-btn active" onclick="openTab(event, 'mission')">
+                    Our Mission
+                </button>
+                <button class="tab-btn" onclick="openTab(event, 'vision')">
+                    Our Vision
+                </button>
+                <button class="tab-btn" onclick="openTab(event, 'values')">
+                    Our Values
+                </button>
+            </div>
+
+            <div class="tab-content">
+                <div id="mission" class="tab-panel active">
+                    <h1 style="font-size: 48px;">Scaling Local Dropshipping Industry to make it The Standard Local eCommerce Industry.</h1>,<br>
+                    <p>
+                       Building Pakistan’s No.1 Dropshippers Army With Great Authority and Huge Moral Responsibility.
+
+Building an infrastructure so efficient, cost effective and so smooth that no other eCommerce business model can manage an alliance of groups and markets like we can and bring the overall consumer cost of purchase to the ground yet keeping each party as profitable as possible.
+
+Developing moral standards and ratings systems capable enough to automatically filter out the black jacks and black hat practices of the local eCommerce Industry.
+                    </p>
+                </div>
+
+                <div id="vision" class="tab-panel">
+                    <h1 style="font-size: 48px;">To Become the Standard Way of eCommerce in Pakistan</h1><br>
+                    <p>
+                        To build the most cost-efficient, resource efficient, morally well managed eCommerce business model that utilizes the best on their best abilities, i.e Top wholesalers and products experts focusing all their attention to source and represent the next big product and Industry’s top digital expert utilizing their digital skills to manage sales and market of the product with their best abilities.
+
+Making these relations so well managed and so transparent and systematic that one might stop considering any other options of running an eCommerce in Pakistan.
+                    </p>
+                </div>
+
+                <div id="values" class="tab-panel">
+                    <h1 style="font-size: 48px;">Transparency for all</h1><br>
+                    <p>
+                        We as a platform believe in extreme realistic approaches and extreme transparency of data so parties involved in the trade could take the right measures and bring the changes that benefits everyone around the chain proud to be a part of. For example, returns are the most expensive part of eCommerce business so Dropify will never adjust these expensive in any other costs or charges mentioned to make sure dropshippers who are capable to control these expense in their business should be the top beneficiary of their efforts.
+
+Morals and Ethics are a Necessity
+
+Slowly but surely we are developing the systems and ratings to catch and kick the unethical business practices and making sure all the parties remains within the defined boundaries so an aura of trust can be built around the network of most alliances made through dropify.
+
+Data and Automation for All
+
+We believe in the intelligence which can be retrieved through the real data being submitted in the platform and utilizing this intelligence for the public benefits and automating the resource taking procedure to provide the services at unimaginable costs for all.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- RIGHT SIDE : IMAGE -->
+        <div class="about-right">
+            <img src="images/about.png" alt="About Dropify">
+        </div>
+
+    </div>
+
+</section>
+
+
+
+    <!-- FAQ SECTION -->
+<section class="faq-section">
+
+    <h2 class="faq-title">FAQs</h2>
+
+    <div class="faq-container">
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>What is Dropify?</span>
+                <span class="icon">+</span>
+            </div>
+            <div class="faq-answer">
+                Dropify is a local dropshipping platform that connects retailers with verified wholesale suppliers across Pakistan.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>How can I become a retailer?</span>
+                <span class="icon">+</span>
+            </div>
+            <div class="faq-answer">
+                You can register as a retailer by creating an account and getting access to suppliers and products.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>Are suppliers verified?</span>
+                <span class="icon">+</span>
+            </div>
+            <div class="faq-answer">
+                Yes, all suppliers on Dropify are verified to ensure trust, quality, and reliable order fulfillment.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>How does order dispatch work?</span>
+                <span class="icon">+</span>
+            </div>
+            <div class="faq-answer">
+                Orders are dispatched from our local hubs located in major cities across Pakistan.
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- FOOTER -->
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <!-- BRAND -->
+        <div class="footer-box">
+            <h3>DROPIFY</h3>
+            <p>
+                Pakistan’s local dropshipping platform connecting retailers
+                with trusted wholesale suppliers.
+            </p>
+        </div>
+
+        <!-- QUICK LINKS -->
+        <div class="footer-box">
+            <h4>Quick Links</h4>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="supplier-register.html">Become a Supplier</a></li>
+                <li><a href="retailer-register.html">Register as Retailer</a></li>
+                <li><a href="login.html">Login</a></li>
+            </ul>
+        </div>
+
+        <!-- ADDRESS -->
+        <div class="footer-box">
+            <h4>Address</h4>
+            <p>Ghouri Town<br>Islamabad, Pakistan</p>
+        </div>
+
+        <!-- SOCIAL -->
+            <div class="footer-box">
+    <h4>Follow Us</h4>
+    <div class="social-icons">
+        <a href="#" aria-label="Facebook">📘</a>
+        <a href="#" aria-label="YouTube">▶️</a>
+        <a href="#" aria-label="Instagram">📸</a>
+        <a href="#" aria-label="TikTok">🎵</a>
+    </div>
+</div>
+
+    </div>
+
+    <div class="footer-bottom">
+        © 2025 Dropify. All Rights Reserved.
+    </div>
+
+</footer>
+
+<script src="js/script.js"></script>
+<script src="js/auth.js"></script>
+</body>
+</html>

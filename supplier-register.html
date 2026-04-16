@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Become a Supplier | Dropify</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="css/supplier-registration.css">
+</head>
+<body>
+
+<!-- HEADER (reuse same header if already made) -->
+<header class="header">
+    <div class="logo"><img src="images/logo.png" alt="" style="width: 150px;"></div>
+</header>
+
+<!-- SUPPLIER REGISTER SECTION -->
+<section class="auth-section">
+
+    <div class="auth-container">
+
+        <!-- LEFT CONTENT -->
+        <div class="auth-info">
+            <h1>Become a Supplier</h1>
+            <p>
+                Join Dropify as a trusted supplier and connect
+                with retailers across Pakistan.
+            </p>
+            <ul>
+                <li>✔ Access to local retailers</li>
+                <li>✔ Secure order management</li>
+                <li>✔ Fast product dispatch</li>
+            </ul>
+        </div>
+
+        <!-- FORM -->
+        <div class="auth-form">
+            <h1>Supplier Registration</h1>
+
+            <form>
+
+                <input type="text" id="supplierName" placeholder="Full Name" required>
+
+                <input type="text" placeholder="Business Name" required>
+
+                <input type="email" id="supplierEmail" placeholder="Email Address" required>
+
+                <input type="text" placeholder="Phone Number" required>
+
+                <input type="text" placeholder="CNIC / Business Reg No" required>
+
+                <input type="password" id="supplierPassword" placeholder="Password" required>
+
+                <input type="password" placeholder="Confirm Password" required>
+
+                <button type="button" onclick="registerSupplier()">Register</button>
+
+                <p class="auth-link">
+                    Already have an account?
+                    <a href="login.html">Login</a>
+                </p>
+
+            </form>
+        </div>
+
+    </div>
+    <script src="js/auth.js"></script>
+</section>
+
+</body>
+</html>

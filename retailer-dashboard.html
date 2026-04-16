@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Retailer Dashboard | Dropify</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/retailer-dashboard.css">
+    <style>
+        /* Tab Switching Logic */
+        .content-section { display: none; }
+        .active-section { display: block; }
+        
+        .sidebar ul li { cursor: pointer; transition: 0.3s; padding: 12px; border-radius: 5px; }
+        .sidebar ul li:hover { background: #28a745; color: white; }
+        .sidebar ul li.active { background: #28a745; color: white; }
+
+        /* MODAL STYLES (Order Popup) */
+        .modal {
+            display: none; position: fixed; z-index: 1000; 
+            left: 0; top: 0; width: 100%; height: 100%; 
+            background-color: rgba(0,0,0,0.5); 
+        }
+        .modal-content {
+            background-color: white; margin: 8% auto; padding: 25px;
+            border-radius: 12px; width: 400px; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .modal-content input, .modal-content select {
+            width: 100%; padding: 10px; margin: 10px 0;
+            border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;
+        }
+        .btn-order { background: #28a745; color: white; border: none; padding: 12px; width: 100%; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 10px; }
+        .btn-close { background: #f8f9fa; color: #333; border: 1px solid #ddd; padding: 10px; width: 100%; border-radius: 5px; cursor: pointer; margin-top: 5px; }
+        
+        .status-badge { padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+        .status-active { background: #e8f5e9; color: #2e7d32; }
+        .status-delivered { background: #f5f5f5; color: #616161; }
+    </style>
+</head>
+<body class="retailer">
+
+<div id="orderModal" class="modal">
+    <div class="modal-content">
+        <h3 style="margin-top:0;">🛒 Place New Order</h3>
+        <label>Select Supplier</label>
+        <select id="ordSupplier">
+            <option>Saddar Electronics Hub</option>
+            <option>Lahore Textile Mart</option>
+            <option>Faisalabad Fabrics</option>
+            <option>Pindi Tech Zone</option>
+        </select>
+        <input type="text" id="ordProduct" placeholder="Product Name">
+        <input type="number" id="ordAmount" placeholder="Amount (PKR)">
+        
+        <button class="btn-order" onclick="submitOrder()">Confirm Order</button>
+        <button class="btn-close" onclick="closeModal()">Cancel</button>
+    </div>
+</div>
+
+<div class="dashboard">
+    <aside class="sidebar">
+        <img src="images/logo.png" alt="Logo" style="width: 150px; margin-bottom: 20px;">
+        <ul>
+            <li class="active" onclick="showSection('dashboard')">Dashboard</li>
+            <li onclick="showSection('suppliers')">Browse Suppliers</li>
+            <li onclick="showSection('orders')">My Orders</li>
+            <li>Messages</li>
+            <button onclick="logout()" style="margin-top:20px; width:100%;">Logout</button>
+        </ul>
+    </aside>
+
+    <main class="main-content">
+        <div class="top-bar">
+            <h3 id="page-title">Retailer Dashboard</h3>
+            <span>Welcome, Retailer</span>
+        </div>
+
+        <div id="dashboard-section" class="content-section active-section">
+            <div class="stats">
+                <div class="stat-card">
+                    <h4>Total Orders</h4>
+                    <p id="stat-total-orders">0</p>
+                </div>
+                <div class="stat-card">
+                    <h4>Active Orders</h4>
+                    <p id="stat-active-orders">0</p>
+                </div>
+                <div class="stat-card">
+                    <h4>Suppliers Connected</h4>
+                    <p id="stat-total-suppliers">0</p>
+                </div>
+                <div class="stat-card">
+                    <h4>Total Revenue</h4>
+                    <p id="stat-total-revenue">PKR 0</p>
+                </div>
+            </div>
+            <p style="text-align:center; color:#888; margin-top:50px;">Monitor your business performance and marketplace activity.</p>
+        </div>
+
+        <div id="suppliers-section" class="content-section" style="padding:20px;">
+            <h3>Top Suppliers</h3>
+            <div style="background:white; border-radius:10px; padding:15px; box-shadow:0 4px 10px rgba(0,0,0,0.05);">
+                <table style="width:100%; border-collapse:collapse; text-align:left;">
+                    <thead>
+                        <tr style="border-bottom:2px solid #f0f0f0;">
+                            <th style="padding:10px;">Supplier</th>
+                            <th>Category</th>
+                            <th>City</th>
+                        </tr>
+                    </thead>
+                    <tbody id="supplier-list">
+                        <tr style="border-bottom:1px solid #eee;"><td><b>Saddar Electronics Hub</b></td><td>Gadgets</td><td>Karachi</td></tr>
+                        <tr style="border-bottom:1px solid #eee;"><td><b>Lahore Textile Mart</b></td><td>Apparel</td><td>Lahore</td></tr>
+                        <tr style="border-bottom:1px solid #eee;"><td><b>Faisalabad Fabrics</b></td><td>Clothing</td><td>Faisalabad</td></tr>
+                        <tr style="border-bottom:1px solid #eee;"><td><b>Pindi Tech Zone</b></td><td>Computers</td><td>Rawalpindi</td></tr>
+                        <tr><td><b>Kashmiri Crafts</b></td><td>Decor</td><td>AJK</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="orders-section" class="content-section" style="padding:20px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                <h3>Order History</h3>
+                <button onclick="openModal()" style="background:#28a745; color:white; border:none; padding:10px 20px; border-radius:5px; cursor:pointer; font-weight:bold;">
+                    + Place New Order
+                </button>
+            </div>
+            <div style="background:white; border-radius:10px; padding:15px; box-shadow:0 4px 10px rgba(0,0,0,0.05);">
+                <table style="width:100%; border-collapse:collapse; text-align:left;">
+                    <thead>
+                        <tr style="border-bottom:2px solid #f0f0f0;">
+                            <th style="padding:10px;">ID</th>
+                            <th>Supplier</th>
+                            <th>Amount (PKR)</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="order-list">
+                        <tr style="border-bottom:1px solid #eee;"><td>#ORD-101</td><td>Saddar Electronics</td><td>4,500</td><td><span class="status-badge status-active">Active</span></td></tr>
+                        <tr style="border-bottom:1px solid #eee;"><td>#ORD-102</td><td>Lahore Textile</td><td>2,200</td><td><span class="status-badge status-delivered">Delivered</span></td></tr>
+                        <tr style="border-bottom:1px solid #eee;"><td>#ORD-103</td><td>Pindi Tech</td><td>15,000</td><td><span class="status-badge status-active">Active</span></td></tr>
+                        <tr style="border-bottom:1px solid #eee;"><td>#ORD-104</td><td>Faisalabad Fabrics</td><td>8,000</td><td><span class="status-badge status-active">Active</span></td></tr>
+                        <tr style="border-bottom:1px solid #eee;"><td>#ORD-105</td><td>Saddar Electronics</td><td>1,200</td><td><span class="status-badge status-active">Active</span></td></tr>
+                        <tr style="border-bottom:1px solid #eee;"><td>#ORD-106</td><td>Kashmiri Crafts</td><td>3,500</td><td><span class="status-badge status-active">Active</span></td></tr>
+                        <tr style="border-bottom:1px solid #eee;"><td>#ORD-107</td><td>Lahore Textile</td><td>5,000</td><td><span class="status-badge status-delivered">Delivered</span></td></tr>
+                        <tr style="border-bottom:1px solid #eee;"><td>#ORD-108</td><td>Pindi Tech</td><td>9,200</td><td><span class="status-badge status-active">Active</span></td></tr>
+                        <tr style="border-bottom:1px solid #eee;"><td>#ORD-109</td><td>Faisalabad Fabrics</td><td>1,500</td><td><span class="status-badge status-active">Active</span></td></tr>
+                        <tr><td>#ORD-110</td><td>Saddar Electronics</td><td>6,000</td><td><span class="status-badge status-delivered">Delivered</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script>
+    // NAVIGATION
+    function showSection(sectionName) {
+        document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active-section'));
+        document.getElementById(sectionName + '-section').classList.add('active-section');
+        document.querySelectorAll('.sidebar ul li').forEach(li => li.classList.remove('active'));
+        event.currentTarget.classList.add('active');
+        document.getElementById('page-title').innerText = "Retailer " + sectionName.charAt(0).toUpperCase() + sectionName.slice(1);
+    }
+
+    // MODAL
+    function openModal() { document.getElementById('orderModal').style.display = 'block'; }
+    function closeModal() { document.getElementById('orderModal').style.display = 'none'; }
+
+    // SUBMIT ORDER
+    function submitOrder() {
+        const sup = document.getElementById('ordSupplier').value;
+        const prod = document.getElementById('ordProduct').value;
+        const amt = document.getElementById('ordAmount').value;
+
+        if(!prod || !amt) { alert("Please enter product name and amount!"); return; }
+
+        const table = document.getElementById('order-list');
+        const id = Math.floor(Math.random() * 900) + 200;
+        
+        const newRow = `
+            <tr style="border-bottom:1px solid #eee;">
+                <td style="padding:10px;">#ORD-${id}</td>
+                <td>${sup}</td>
+                <td>${Number(amt).toLocaleString()}</td>
+                <td><span class="status-badge status-active">Active</span></td>
+            </tr>`;
+        
+        table.innerHTML = newRow + table.innerHTML;
+        closeModal();
+        updateStats(); // This will recalculate revenue!
+    }
+
+    // STATS & REVENUE CALCULATION
+    function updateStats() {
+        const orderRows = document.querySelectorAll('#order-list tr');
+        const orderCount = orderRows.length;
+        const supplierCount = document.querySelectorAll('#supplier-list tr').length;
+        
+        let activeCount = 0;
+        let totalRevenue = 0;
+
+        orderRows.forEach(row => {
+            // Active orders count
+            if(row.querySelector('.status-badge').innerText === 'Active') {
+                activeCount++;
+            }
+            // Revenue Sum: Getting amount from 3rd column (index 2)
+            let priceText = row.cells[2].innerText.replace(/,/g, '');
+            totalRevenue += parseInt(priceText) || 0;
+        });
+
+        document.getElementById('stat-total-orders').innerText = orderCount;
+        document.getElementById('stat-total-suppliers').innerText = supplierCount;
+        document.getElementById('stat-active-orders').innerText = activeCount;
+        document.getElementById('stat-total-revenue').innerText = "PKR " + totalRevenue.toLocaleString();
+    }
+
+    window.onload = updateStats;
+
+    function logout(){
+        localStorage.removeItem("loggedIn");
+        window.location.href = "login.html";
+    }
+</script>
+
+</body>
+</html>
