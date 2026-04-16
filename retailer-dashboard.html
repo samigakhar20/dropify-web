@@ -146,44 +146,14 @@
     </main>
 </div>
 
-<script>
-    // NAVIGATION
-    function showSection(sectionName) {
-        document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active-section'));
-        const target = document.getElementById(sectionName + '-section');
-        if(target) target.classList.add('active-section');
-        
-        document.querySelectorAll('.sidebar ul li').forEach(li => li.classList.remove('active'));
-        if(event) event.currentTarget.classList.add('active');
-        
-        document.getElementById('page-title').innerText = "Retailer " + sectionName.charAt(0).toUpperCase() + sectionName.slice(1);
-    }
-
-    function closeRetailerModal() { 
-        document.getElementById('retailerDetailsModal').style.display = 'none'; 
-    }
-
-    // Modal band karne ke liye bahar click check
-    window.onclick = function(event) {
-        let modal = document.getElementById('retailerDetailsModal');
-        if (event.target == modal) modal.style.display = "none";
-    }
-</script>
 
 <script src="https://www.gstatic.com/firebasejs/9.1.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.1.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.1.1/firebase-firestore-compat.js"></script>
 <script src="js/auth.js"></script>
-<script src="js/retailer.js">
+<script src="js/retailer.js"></script>
 
-        document.getElementById('stat-total-orders').innerText = orderCount;
-        document.getElementById('stat-total-suppliers').innerText = supplierCount;
-        document.getElementById('stat-active-orders').innerText = activeCount;
-        document.getElementById('stat-total-revenue').innerText = "PKR " + totalRevenue.toLocaleString();
-    }
-
-    window.onload = updateStats;
-
+<script>
     function logout(){
         localStorage.removeItem("loggedIn");
         window.location.href = "login.html";
