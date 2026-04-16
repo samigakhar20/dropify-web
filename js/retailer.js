@@ -50,6 +50,16 @@ function showMarketDetails(id, p) {
     document.getElementById("retailerDetailsModal").style.display = "block";
 }
 
+function showOrderDetails(orderId, data) {
+    document.getElementById("detId").innerText = orderId;
+    document.getElementById("detName").innerText = data.customerName;
+    document.getElementById("detPhone").innerText = data.customerPhone;
+    document.getElementById("detAddress").innerText = data.customerAddress;
+    document.getElementById("detProduct").innerText = data.productName;
+    document.getElementById("detAmount").innerText = data.amount;
+    document.getElementById("orderDetailsModal").style.display = "block";
+}
+
 // --- ORDER PLACE KARNA ---
 async function placeOrder(productId, p) {
     const retailerId = auth.currentUser.uid;
