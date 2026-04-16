@@ -101,12 +101,12 @@ function closeDetailsModal() {
 // --- 3. AUTH & INITIALIZATION ---
 auth.onAuthStateChanged((user) => {
     if (user) {
-        loadDashboardData(user.uid);
+        loadDashboardData(user.uid);      // Ye stats aur products load karega
+        loadSupplierOrders(user.uid);     // YAHAN YE LINE ADD KAREIN - Ye table load karega
     } else {
         window.location.href = "login.html";
     }
 });
-
 function logout() {
     auth.signOut().then(() => { window.location.href = "login.html"; });
 }
