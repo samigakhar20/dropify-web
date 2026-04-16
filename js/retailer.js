@@ -112,3 +112,18 @@ function logout() {
         window.location.href = "login.html";
     });
 }
+
+document.getElementById("marketSearch").addEventListener("keyup", function() {
+    let value = this.value.toLowerCase();
+    let cards = document.querySelectorAll(".product-card");
+
+    cards.forEach(card => {
+        // Card ke andar jo product name (h4) hai usay check karein
+        let name = card.querySelector("h4").innerText.toLowerCase();
+        if (name.indexOf(value) > -1) {
+            card.style.display = "";
+        } else {
+            card.style.display = "none";
+        }
+    });
+});
