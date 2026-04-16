@@ -65,6 +65,20 @@
         <p><strong>Total Amount:</strong> PKR <span id="detAmount"></span></p>
     </div>
 </div>
+    <div id="productViewModal" class="modal">
+    <div class="modal-content" style="width: 500px; text-align: center;">
+        <span onclick="closeProductModal()" style="float:right; cursor:pointer; font-size: 24px;">&times;</span>
+        <h2 id="viewPName">Product Name</h2>
+        <hr>
+        <img id="viewPImage" src="" style="width: 100%; max-height: 300px; object-fit: contain; border-radius: 8px; margin-bottom: 15px;">
+        <div style="text-align: left; padding: 10px;">
+            <p><strong>Description:</strong></p>
+            <p id="viewPDesc" style="color: #555; line-height: 1.5;"></p>
+            <h3 style="color: #28a745;">Price: PKR <span id="viewPPrice">0</span></h3>
+        </div>
+        <button class="btn-order" id="viewOrderBtn">Order Now</button>
+    </div>
+</div>
 <div class="dashboard">
     <aside class="sidebar">
         <img src="logo.png" alt="Logo" style="width: 150px; margin-bottom: 20px;">
