@@ -151,7 +151,9 @@ auth.onAuthStateChanged((user) => {
         loadMarketplace();
         loadDashboardStats(user.uid); 
         loadMyOrders(user.uid);
-        
+
+        loadRetailerOrdersForComplaints(user.uid);
+        loadComplaintsList(user.uid);
     } else {
         window.location.href = "login.html";
     }
