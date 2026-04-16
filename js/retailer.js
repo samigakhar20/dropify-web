@@ -70,15 +70,6 @@ function showMarketDetails(id, p) {
     document.getElementById("retailerDetailsModal").style.display = "block";
 }
 
-function showOrderDetails(orderId, data) {
-    document.getElementById("detId").innerText = orderId;
-    document.getElementById("detName").innerText = data.customerName;
-    document.getElementById("detPhone").innerText = data.customerPhone;
-    document.getElementById("detAddress").innerText = data.customerAddress;
-    document.getElementById("detProduct").innerText = data.productName;
-    document.getElementById("detAmount").innerText = data.amount;
-    document.getElementById("orderDetailsModal").style.display = "block";
-}
 
 // --- ORDER PLACE KARNA ---
 async function placeOrder(productId, p) {
@@ -175,14 +166,14 @@ function loadDashboardStats(retailerId) {
       });
 }
 
-// --- 2. MY ORDERS TABLE LOAD KARNA ---
+// --- 2. MY ORDERS TABLE LOAD KARNA (FIXED) ---
 function loadMyOrders(retailerId) {
     const orderList = document.getElementById("order-list");
     if (!orderList) return;
 
     db.collection("orders")
       .where("retailerId", "==", retailerId)
-      .orderBy("createdAt", "desc") // Naya order sab se upar
+      .orderBy("createdAt", "desc") 
       .onSnapshot((snapshot) => {
           orderList.innerHTML = "";
           
@@ -192,16 +183,20 @@ function loadMyOrders(retailerId) {
           }
 
           snapshot.forEach((doc) => {
-              const res = doc.data();
-              // loadMyOrders function ke andar jahan row banti hai:
-const row = `
-    <tr onclick='showOrderDetails("${doc.id}", ${JSON.stringify(data)})' style="cursor:pointer;">
-        <td><strong>${data.productName}</strong><br><small>ID: ${doc.id.substring(0,8)}...</small></td>
-        <td>${data.customerName}</td>
-        <td>PKR ${data.amount}</td>
-        <td><span class="status-badge">${data.status}</span></td>
-    </tr>
-`;
+              const data = doc.data(); // Yahan 'res' ki jagah 'data' kar diya hai
+              const orderId = doc.id;
+              
+              // Stringify handle karne ke liye taake details modal sahi khule
+              const orderDataStr = JSON.stringify(data).replace(/'/g, "&apos;");
+
+              const row = `
+                <tr onclick='showOrderDetails("${orderId}", ${orderDataStr})' style="cursor:pointer;">
+                    <td><strong>${data.productName}</strong><br><small>ID: ${orderId.substring(0,8)}...</small></td>
+                    <td>${data.customerName}</td>
+                    <td>PKR ${data.amount}</td>
+                    <td><span class="status-badge" style="background:#d4edda; color:#155724; padding:4px 8px; border-radius:4px;">${data.status}</span></td>
+                </tr>
+              `;
               orderList.innerHTML += row;
           });
       }, (error) => {
