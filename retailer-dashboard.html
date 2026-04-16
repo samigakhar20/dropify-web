@@ -95,7 +95,7 @@
             <li class="active" onclick="showSection('dashboard')">Dashboard</li>
             <li onclick="showSection('suppliers')">Marketplace</li>
             <li onclick="showSection('orders')">My Orders</li>
-            <li>Messages</li>
+            <li onclick="showSection('complaints')">Complaints</li>
             <button onclick="logout()">Logout</button>
         </ul>
     </aside>
@@ -150,6 +150,41 @@
             </thead>
             <tbody id="order-list">
                 </tbody>
+        </table>
+    </div>
+</div>
+        <div id="complaints-section" class="content-section" style="padding: 20px;">
+    <h3>Customer Support & Complaints</h3>
+    
+    <div style="background: white; border-radius: 10px; padding: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 20px;">
+        <h4>File a New Complaint</h4>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
+            <div>
+                <label>Select Order ID</label>
+                <select id="compOrderId" onchange="fillClientName()" style="width:100%; padding:10px; border-radius:5px; border:1px solid #ddd;"></select>
+            </div>
+            <div>
+                <label>Client Name</label>
+                <input type="text" id="compClientName" readonly style="width:100%; padding:10px; border-radius:5px; border:1px solid #ddd; background: #f9f9f9;" placeholder="Auto-filled">
+            </div>
+        </div>
+        <textarea id="compMessage" placeholder="Describe the issue with this order..." rows="4" style="width: 100%; margin-top: 15px; border-radius: 5px; border: 1px solid #ddd; padding: 10px; box-sizing: border-box;"></textarea>
+        <button onclick="submitComplaint()" id="submitCompBtn" style="background: #ff6600; color: white; border: none; padding: 12px 25px; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 15px;">Submit Complaint</button>
+    </div>
+
+    <div style="background: white; border-radius: 10px; padding: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+        <h4>Previous Complaints</h4>
+        <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+            <thead>
+                <tr style="border-bottom: 2px solid #f0f0f0; text-align: left;">
+                    <th style="padding: 10px;">Ticket ID</th>
+                    <th>Order ID</th>
+                    <th>Client</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody id="complaint-list"></tbody>
         </table>
     </div>
 </div>
