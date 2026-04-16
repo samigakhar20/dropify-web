@@ -70,5 +70,3 @@ function registerRetailer() {
         alert(error.message);
     });
 }
-    .catch((error) => { alert(error.message); });
-}
