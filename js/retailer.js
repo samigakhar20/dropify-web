@@ -208,3 +208,22 @@ const row = `
           console.error("Orders Load Error: ", error);
       });
 }
+
+function showOrderDetails(orderId, data) {
+    // Modal ke elements mein data bharna
+    document.getElementById("detId").innerText = orderId;
+    document.getElementById("detName").innerText = data.customerName;
+    document.getElementById("detPhone").innerText = data.customerPhone || "N/A";
+    document.getElementById("detAddress").innerText = data.customerAddress || "No Address Provided";
+    document.getElementById("detProduct").innerText = data.productName;
+    document.getElementById("detAmount").innerText = data.amount;
+    document.getElementById("detStatus").innerText = data.status;
+
+    // Modal dikhao
+    document.getElementById("orderDetailsModal").style.display = "block";
+}
+
+// Modal band karne ka function
+function closeOrderModal() {
+    document.getElementById("orderDetailsModal").style.display = "none";
+}
