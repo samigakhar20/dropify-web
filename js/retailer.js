@@ -1,5 +1,22 @@
 // --- 1. MARKETPLACE PRODUCTS LOAD KARNA ---
 function loadMarketplace() {
+    // Search Input Listener
+document.getElementById("marketSearch").addEventListener("input", (e) => {
+    const searchTerm = e.target.value.toLowerCase();
+    const productCards = document.querySelectorAll(".product-card");
+
+    productCards.forEach(card => {
+        // Product name h4 tag mein hai
+        const productName = card.querySelector("h4").innerText.toLowerCase();
+        
+        if (productName.includes(searchTerm)) {
+            card.style.display = "block"; // Show match
+        } else {
+            card.style.display = "none"; // Hide others
+        }
+    });
+});
+    
     const grid = document.getElementById("market-grid");
     if (!grid) return;
 
