@@ -1,14 +1,15 @@
-// Firebase Configuration
+// Firebase Configuration (Updated from Screenshot 61)
 const firebaseConfig = {
-  apiKey: "AIzaSyAs7...", // Aapke screenshot wala poora code yahan automatic link ho jayega
-  authDomain: "dropify-web-7bc63.firebaseapp.com",
-  projectId: "dropify-web-7bc63",
-  storageBucket: "dropify-web-7bc63.firebasestorage.app",
-  messagingSenderId: "305118744574",
-  appId: "1:305118744574:web:e061737e96e594b2f29339"
+  apiKey: "AIzaSyDD0AuOKrxIuLI_ZPzx8rCVa_GAjgx3b3bc",
+  authDomain: "dropify-caa0c.firebaseapp.com",
+  projectId: "dropify-caa0c",
+  storageBucket: "dropify-caa0c.firebasestorage.app",
+  messagingSenderId: "1233868442768",
+  appId: "1:1233868442768:web:2478356a8566ed499b3449",
+  measurementId: "G-HET1M48B2E"
 };
 
-// Initialize Firebase
+// Initialize Firebase (Using Compat Version for your HTML setup)
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const auth = firebase.auth();
@@ -23,7 +24,6 @@ function registerRetailer() {
 
     auth.createUserWithEmailAndPassword(email, password)
     .then((userCredential) => {
-        // Data Firestore mein save karein
         return db.collection("users").doc(userCredential.user.uid).set({
             fullName: name,
             email: email,
@@ -69,14 +69,12 @@ function loginUser() {
 
     auth.signInWithEmailAndPassword(email, password)
     .then((userCredential) => {
-        // Check user role from Firestore
         return db.collection("users").doc(userCredential.user.uid).get();
     })
     .then((doc) => {
         if (doc.exists) {
             const userData = doc.data();
             localStorage.setItem("userRole", userData.role);
-            
             if(userData.role === "supplier") {
                 window.location.href = "supplier-dashboard.html";
             } else {
