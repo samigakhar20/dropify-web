@@ -98,11 +98,11 @@ function showMarketDetails(id, p) {
 // --- ORDER PLACE KARNA ---
 async function placeOrder() {
     // 1. Elements ko sahi ID se pakrein
-    const qtyVal = document.getElementById("orderQuantity").value;
-    const priceVal = document.getElementById("retailerPrice").value;
-    const nameVal = document.getElementById("custName").value;
-    const phoneVal = document.getElementById("custPhone").value;
-    const addressVal = document.getElementById("custAddress").value;
+    const qtyVal = document.getElementById("orderQuantity2").value;
+    const priceVal = document.getElementById("retailerPrice2").value;
+    const nameVal = document.getElementById("custName2").value;
+    const phoneVal = document.getElementById("custPhone2").value;
+    const addressVal = document.getElementById("custAddress2").value;
     const orderBtn = document.getElementById("orderBtn");
 
     // 2. Validation Check (Sahi tareekay se)
