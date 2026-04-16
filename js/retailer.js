@@ -127,7 +127,6 @@ async function placeOrder() {
         orderBtn.innerText = "Confirm & Place Order";
         orderBtn.disabled = false;
     }
-}
 function closeRetailerModal() {
     const modal = document.getElementById("retailerDetailsModal");
     if (modal) {
