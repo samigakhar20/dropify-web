@@ -149,6 +149,28 @@
                 </table>
             </div>
         </div>
+        <div id="orderUpdateModal" class="modal">
+    <div class="modal-content">
+        <h3>Update Order Status</h3>
+        <hr>
+        <div id="orderSummary" style="text-align: left; margin: 15px 0; font-size: 14px;">
+            </div>
+        
+        <label><b>Change Status:</b></label>
+        <select id="newStatus">
+            <option value="Pending">Pending</option>
+            <option value="At Warehouse">At Warehouse</option>
+            <option value="At Destination">At Destination</option>
+            <option value="Client No Receiving">Client No Receiving</option>
+            <option value="Delivered/Returned">Delivered/Returned</option>
+        </select>
+
+        <div class="modal-btns">
+            <button class="btn-cancel" onclick="closeUpdateModal()">Close</button>
+            <button class="btn-save" id="updateStatusBtn">Update Status</button>
+        </div>
+    </div>
+</div>
     </main>
 </div>
 
