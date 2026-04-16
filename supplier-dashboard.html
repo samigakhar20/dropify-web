@@ -53,7 +53,8 @@
 <input type="number" id="prodStock" placeholder="Stock Quantity" required>
 
 <textarea id="prodDesc" placeholder="Product Description" rows="3" style="width: 100%; margin-top: 10px; border-radius: 5px; border: 1px solid #ccc; padding: 10px;"></textarea>
-<input type="text" id="prodImg" placeholder="Image URL (Link)" style="margin-top: 10px;">
+<label style="display: block; margin-top: 10px; font-weight: bold;">Product Image:</label>
+<input type="file" id="prodImageFile" accept="image/*" style="margin-top: 5px;">
 
 <button type="button" onclick="saveProduct()" id="saveBtn">Save Product</button>
         </div>
