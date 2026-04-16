@@ -154,26 +154,26 @@
     </div>
 </div>
 <div id="retailerDetailsModal" class="modal">
-    <div class="modal-content" style="width: 450px;">
-        <span onclick="closeRetailerModal()" style="float:right; cursor:pointer;">&times;</span>
+    <div class="modal-content">
         <h3 id="mName">Product Name</h3>
+        <p>Supplier Price: PKR <span id="mBasePrice">0</span></p>
         <hr>
-        <div id="order-form">
-            <label>Full Name:</label>
-            <input type="text" id="custName" placeholder="Enter your name" required>
-            
-            <label>Phone Number:</label>
-            <input type="number" id="custPhone" placeholder="03xxxxxxxxx" required>
-            
-            <label>Shipping Address:</label>
-            <textarea id="custAddress" placeholder="Full Address" style="width:100%; border-radius:5px; border:1px solid #ddd; padding:8px;"></textarea>
-            
-            <label>Selling Price (Your Price):</label>
-<input type="number" id="custPrice" placeholder="Enter your selling price">
 
-<p style="font-size: 12px; color: #666;">Supplier Base Price: PKR <span id="mBasePrice">0</span></p>
-            
-            <button id="orderBtn" class="btn-order" style="margin-top:15px;">Confirm & Place Order</button>
+        <div style="margin-bottom: 10px;">
+            <label><b>Quantity:</b></label>
+            <input type="number" id="orderQuantity" value="1" min="1" style="width: 100%; padding: 8px; margin-top: 5px;">
+        </div>
+
+        <label><b>Your Selling Price (Per Unit):</b></label>
+        <input type="number" id="retailerPrice" placeholder="Enter Price per item">
+        
+        <input type="text" id="custName" placeholder="Customer Name">
+        <input type="text" id="custPhone" placeholder="Customer Phone">
+        <textarea id="custAddress" placeholder="Delivery Address"></textarea>
+
+        <div class="modal-btns">
+            <button class="btn-cancel" onclick="closeRetailerModal()">Cancel</button>
+            <button class="btn-save" id="orderBtn">Confirm Order</button>
         </div>
     </div>
 </div>
