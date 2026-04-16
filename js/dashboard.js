@@ -110,3 +110,39 @@ auth.onAuthStateChanged((user) => {
 function logout() {
     auth.signOut().then(() => { window.location.href = "login.html"; });
 }
+
+function loadSupplierOrders(supplierId) {
+    const orderList = document.getElementById("supplier-order-list"); // Check karein ye ID table body mein hai ya nahi
+    if (!orderList) return;
+
+    // Counting sahi hai, matlab data mojood hai. Ab usey fetch karein:
+    db.collection("orders")
+      .where("supplierId", "==", supplierId) // Ensure karein ke 'supplierId' exactly wahi hai jo product post karte waqt save hui thi
+      .orderBy("createdAt", "desc")
+      .onSnapshot((snapshot) => {
+          orderList.innerHTML = "";
+          
+          if (snapshot.empty) {
+              orderList.innerHTML = "<tr><td colspan='5' style='text-align:center;'>No orders found.</td></tr>";
+              return;
+          }
+
+          snapshot.forEach((doc) => {
+              const data = doc.data();
+              const orderId = doc.id;
+
+              const row = `
+                <tr>
+                    <td>${orderId.substring(0,8)}...</td>
+                    <td>${data.productName}</td>
+                    <td>${data.customerName}</td>
+                    <td>PKR ${data.amount}</td>
+                    <td><span class="status-badge">${data.status}</span></td>
+                </tr>
+              `;
+              orderList.innerHTML += row;
+          });
+      }, (error) => {
+          console.error("Supplier Orders Error:", error);
+      });
+}
