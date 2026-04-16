@@ -239,3 +239,83 @@ function closeOrderModal() {
 function closeRetailerModal() {
     document.getElementById("retailerDetailsModal").style.display = "none";
 }
+
+let retailerOrders = {}; // To store order details for auto-fill
+
+// Load Orders for Dropdown
+function loadRetailerOrdersForComplaints(retailerId) {
+    db.collection("orders").where("retailerId", "==", retailerId).onSnapshot((snapshot) => {
+        const dropdown = document.getElementById("compOrderId");
+        dropdown.innerHTML = '<option value="">-- Select Order --</option>';
+        snapshot.forEach(doc => {
+            const data = doc.data();
+            retailerOrders[doc.id] = data.customerName; // Save name for later
+            dropdown.innerHTML += `<option value="${doc.id}">${doc.id.substring(0,8)}... (${data.productName})</option>`;
+        });
+    });
+}
+
+// Auto-fill Client Name
+function fillClientName() {
+    const orderId = document.getElementById("compOrderId").value;
+    document.getElementById("compClientName").value = retailerOrders[orderId] || "";
+}
+
+// Submit Complaint
+async function submitComplaint() {
+    const orderId = document.getElementById("compOrderId").value;
+    const clientName = document.getElementById("compClientName").value;
+    const message = document.getElementById("compMessage").value;
+    const btn = document.getElementById("submitCompBtn");
+
+    if (!orderId || !message) {
+        alert("Please select an order and write a message.");
+        return;
+    }
+
+    btn.innerText = "Submitting...";
+    btn.disabled = true;
+
+    try {
+        await db.collection("complaints").add({
+            retailerId: auth.currentUser.uid,
+            orderId: orderId,
+            clientName: clientName,
+            message: message,
+            status: "Pending",
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        alert("Complaint Filed Successfully!");
+        document.getElementById('compMessage').value = "";
+        btn.innerText = "Submit Complaint";
+        btn.disabled = false;
+    } catch (error) {
+        alert("Error: " + error.message);
+        btn.innerText = "Submit Complaint";
+        btn.disabled = false;
+    }
+}
+
+// Load Complaint History
+function loadComplaintsList(retailerId) {
+    db.collection("complaints")
+    .where("retailerId", "==", retailerId)
+    .orderBy("createdAt", "desc")
+    .onSnapshot((snapshot) => {
+        const list = document.getElementById("complaint-list");
+        list.innerHTML = "";
+        snapshot.forEach(doc => {
+            const c = doc.data();
+            const date = c.createdAt ? c.createdAt.toDate().toLocaleDateString() : "...";
+            list.innerHTML += `
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 12px;">#${doc.id.substring(0,5)}</td>
+                    <td>${c.orderId.substring(0,8)}...</td>
+                    <td>${c.clientName}</td>
+                    <td><b style="color: ${c.status === 'Pending' ? '#ffcc00' : '#28a745'}">${c.status}</b></td>
+                    <td>${date}</td>
+                </tr>`;
+        });
+    });
+}
