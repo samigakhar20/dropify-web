@@ -48,51 +48,50 @@ async function saveProduct() {
 
 // --- 2. DATA LOADERS ---
 
-function loadDashboardData(supplierId) {
-    // Stats aur Inventory dono ko handle karne ke liye single listener flow
-    
-    // A. Total Products & Inventory Table
-    db.collection("products")
-      .where("supplierId", "==", supplierId)
-      .onSnapshot((snapshot) => {
-          // Update Stats
-          document.getElementById("stat-total-products").innerText = snapshot.size;
+function loadInventory(supplierId) {
+    const grid = document.getElementById("products-grid");
+    if (!grid) return;
 
-          // Update Table
-          const tableBody = document.getElementById("inventory-body");
-          if (tableBody) {
-              tableBody.innerHTML = "";
-              if (snapshot.empty) {
-                  tableBody.innerHTML = "<tr><td colspan='5' style='text-align:center; padding:20px;'>No products found.</td></tr>";
-              } else {
-                  snapshot.forEach((doc) => {
-                      const product = doc.data();
-                      const row = `
-                        <tr style="border-bottom: 1px solid #eee;">
-                            <td style="padding: 10px;">
-                                <img src="${product.imageUrl || 'https://via.placeholder.com/50'}" width="50" height="50" style="border-radius: 5px; object-fit: cover;">
-                            </td>
-                            <td>${product.name || 'N/A'}</td>
-                            <td>${product.category || 'N/A'}</td>
-                            <td>PKR ${product.price || 0}</td>
-                            <td>${product.stock || 0}</td>
-                        </tr>`;
-                      tableBody.innerHTML += row;
-                  });
-              }
-          }
-      });
+    db.collection("products").where("supplierId", "==", supplierId)
+    .onSnapshot((snapshot) => {
+        grid.innerHTML = ""; 
+        if (snapshot.empty) {
+            grid.innerHTML = "<p>No products yet.</p>";
+            return;
+        }
 
-    // B. Total & Pending Orders
-    db.collection("orders")
-      .where("supplierId", "==", supplierId)
-      .onSnapshot((snapshot) => {
-          document.getElementById("stat-total-orders").innerText = snapshot.size;
-          let pending = snapshot.docs.filter(doc => doc.data().status === "pending").length;
-          document.getElementById("stat-pending-orders").innerText = pending;
-      });
+        snapshot.forEach((doc) => {
+            const p = doc.data();
+            // Card design
+            const card = `
+                <div class="product-card" onclick='showDetails(${JSON.stringify(p)})' 
+                     style="background: white; border-radius: 12px; padding: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); cursor: pointer; transition: 0.3s;">
+                    <img src="${p.imageUrl}" style="width: 100%; height: 150px; object-fit: cover; border-radius: 8px;">
+                    <h4 style="margin: 10px 0 5px 0; color: #333;">${p.name}</h4>
+                    <p style="color: #ff6600; font-weight: bold; margin: 0;">PKR ${p.price}</p>
+                    <small style="color: #777;">Stock: ${p.stock}</small>
+                </div>
+            `;
+            grid.innerHTML += card;
+        });
+    });
 }
 
+// Click karne par details dikhane ka function
+function showDetails(product) {
+    document.getElementById("detImg").src = product.imageUrl;
+    document.getElementById("detName").innerText = product.name;
+    document.getElementById("detCat").innerText = product.category;
+    document.getElementById("detDesc").innerText = product.description || "No description available.";
+    document.getElementById("detPrice").innerText = product.price;
+    document.getElementById("detStock").innerText = product.stock;
+    
+    document.getElementById("detailsModal").style.display = "block";
+}
+
+function closeDetailsModal() {
+    document.getElementById("detailsModal").style.display = "none";
+}
 // --- 3. AUTH & INITIALIZATION ---
 
 auth.onAuthStateChanged((user) => {
