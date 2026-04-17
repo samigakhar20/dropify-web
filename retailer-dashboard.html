@@ -190,46 +190,59 @@
     </div>
 </div>
 
-        <div id="investment-section" class="content-section" style="padding: 20px;">
-    <h3>💰 Business Investment Request</h3>
-    <p style="color: #666; margin-bottom: 20px;">Scale your business with Dropify's investment program.</p>
+       <div id="investment-section" class="content-section" style="padding: 30px;">
+    <div style="max-width: 800px; margin: 0 auto;">
+        <h3 style="margin-bottom: 5px;">💰 Business Investment Request</h3>
+        <p style="color: #666; margin-bottom: 25px;">Scale your business with Dropify's investment program.</p>
 
-    <div style="background: white; border-radius: 10px; padding: 25px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); max-width: 600px;">
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-            <div>
-                <label>Full Name</label>
-                <input type="text" id="invFullName" style="width:100%; padding:10px; border-radius:5px; border:1px solid #ddd;" placeholder="Enter Name">
+        <div style="background: white; border-radius: 12px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); border: 1px solid #eee;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                
+                <div class="form-group">
+                    <label style="display:block; margin-bottom: 8px; font-weight: 600; color: #444;">Full Name</label>
+                    <input type="text" id="invFullName" style="width:100%; padding: 12px; border-radius: 8px; border: 1px solid #ddd; outline: none;" placeholder="Enter Name">
+                </div>
+
+                <div class="form-group">
+                    <label style="display:block; margin-bottom: 8px; font-weight: 600; color: #444;">Email Address</label>
+                    <input type="email" id="invEmail" style="width:100%; padding: 12px; border-radius: 8px; border: 1px solid #ddd; outline: none;" placeholder="Email">
+                </div>
+
+                <div class="form-group">
+                    <label style="display:block; margin-bottom: 8px; font-weight: 600; color: #444;">CNIC Number</label>
+                    <input type="number" id="invCnic" style="width:100%; padding: 12px; border-radius: 8px; border: 1px solid #ddd; outline: none;" placeholder="13 Digit CNIC">
+                </div>
+
+                <div class="form-group">
+                    <label style="display:block; margin-bottom: 8px; font-weight: 600; color: #444;">Contact Number</label>
+                    <input type="tel" id="invPhone" style="width:100%; padding: 12px; border-radius: 8px; border: 1px solid #ddd; outline: none;" placeholder="03xx-xxxxxxx">
+                </div>
+
+                <div class="form-group">
+                    <label style="display:block; margin-bottom: 8px; font-weight: 600; color: #444;">Amount Needed (PKR)</label>
+                    <input type="number" id="invAmount" style="width:100%; padding: 12px; border-radius: 8px; border: 1px solid #ddd; outline: none;" placeholder="e.g. 50000">
+                </div>
+
+                <div class="form-group">
+                    <label style="display:block; margin-bottom: 8px; font-weight: 600; color: #444;">Return Plan</label>
+                    <select id="invPlan" style="width:100%; padding: 12px; border-radius: 8px; border: 1px solid #ddd; outline: none; background: white;">
+                        <option value="3 Months">3 Months</option>
+                        <option value="6 Months">6 Months</option>
+                        <option value="1 Year">1 Year</option>
+                    </select>
+                </div>
+
             </div>
-            <div>
-                <label>Email Address</label>
-                <input type="email" id="invEmail" style="width:100%; padding:10px; border-radius:5px; border:1px solid #ddd;" placeholder="Email">
+
+            <div style="margin-top: 20px;">
+                <label style="display:block; margin-bottom: 8px; font-weight: 600; color: #444;">Business Description (How will you use this?)</label>
+                <textarea id="invDescription" rows="5" style="width: 100%; border-radius: 8px; border: 1px solid #ddd; padding: 12px; box-sizing: border-box; outline: none; resize: vertical;" placeholder="Explain your plan..."></textarea>
             </div>
-            <div>
-                <label>CNIC Number</label>
-                <input type="number" id="invCnic" style="width:100%; padding:10px; border-radius:5px; border:1px solid #ddd;" placeholder="13 Digit CNIC">
-            </div>
-            <div>
-                <label>Contact Number</label>
-                <input type="tel" id="invPhone" style="width:100%; padding:10px; border-radius:5px; border:1px solid #ddd;" placeholder="03xx-xxxxxxx">
-            </div>
-            <div>
-                <label>Amount Needed (PKR)</label>
-                <input type="number" id="invAmount" style="width:100%; padding:10px; border-radius:5px; border:1px solid #ddd;" placeholder="e.g. 50000">
-            </div>
-            <div>
-                <label>Return Plan</label>
-                <select id="invPlan" style="width:100%; padding:10px; border-radius:5px; border:1px solid #ddd;">
-                    <option value="3 Months">3 Months</option>
-                    <option value="6 Months">6 Months</option>
-                    <option value="1 Year">1 Year</option>
-                </select>
-            </div>
+
+            <button onclick="submitInvestmentRequest()" id="invBtn" style="background: #28a745; color: white; border: none; padding: 15px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 25px; width: 100%; font-size: 16px; transition: 0.3s;">
+                Send Request
+            </button>
         </div>
-        <div style="margin-top: 15px;">
-            <label>Business Description (How will you use this?)</label>
-            <textarea id="invDescription" rows="4" style="width: 100%; border-radius: 5px; border: 1px solid #ddd; padding: 10px; box-sizing: border-box;" placeholder="Explain your plan..."></textarea>
-        </div>
-        <button onclick="submitInvestmentRequest()" id="invBtn" style="background: #28a745; color: white; border: none; padding: 12px 25px; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 20px; width: 100%;">Send Request</button>
     </div>
 </div>
 <div id="retailerDetailsModal" class="modal">
