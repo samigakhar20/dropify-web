@@ -330,3 +330,55 @@ function loadComplaintsList(retailerId) {
         });
     });
 }
+
+// --- INVESTMENT REQUEST SUBMISSION ---
+async function submitInvestmentRequest() {
+    const name = document.getElementById("invFullName").value;
+    const email = document.getElementById("invEmail").value;
+    const cnic = document.getElementById("invCnic").value;
+    const phone = document.getElementById("invPhone").value;
+    const amount = document.getElementById("invAmount").value;
+    const plan = document.getElementById("invPlan").value;
+    const desc = document.getElementById("invDescription").value;
+    const btn = document.getElementById("invBtn");
+
+    if (!name || !email || !cnic || !phone || !amount || !desc) {
+        alert("Please fill all fields before submitting!");
+        return;
+    }
+
+    btn.innerText = "Processing...";
+    btn.disabled = true;
+
+    try {
+        await db.collection("investment_requests").add({
+            retailerId: auth.currentUser.uid,
+            fullName: name,
+            email: email,
+            cnic: cnic,
+            phone: phone,
+            amountRequested: Number(amount),
+            returnPlan: plan,
+            description: desc,
+            status: "Pending Review",
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        alert("Investment Request Sent Successfully! Our team will contact you.");
+        
+        // Form Clear karein
+        document.getElementById("invFullName").value = "";
+        document.getElementById("invEmail").value = "";
+        document.getElementById("invCnic").value = "";
+        document.getElementById("invPhone").value = "";
+        document.getElementById("invAmount").value = "";
+        document.getElementById("invDescription").value = "";
+        
+    } catch (error) {
+        console.error("Investment Error:", error);
+        alert("Error: " + error.message);
+    } finally {
+        btn.innerText = "Send Request";
+        btn.disabled = false;
+    }
+}
