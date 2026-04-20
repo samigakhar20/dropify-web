@@ -268,8 +268,8 @@ body {
 }
 
 .typing-text {
-    font-size: 28px;
-    font-weight: 600;
+    font-size: 24px;
+    font-weight: 550;
     margin-top: 20px;
 }
 
@@ -295,16 +295,16 @@ body {
 
 /* MAIN STATIC TEXT */
 .typing-text {
-    font-size: 70px;        /* bigger */
-    font-weight: 800;       /* extra bold */
+    font-size: 64px;        /* bigger */
+    font-weight: 700;       /* extra bold */
     color: #fff;            /* white */
 }
 
 /* TYPEWRITER TEXT */
 #typewriter {
     color: #ff8800;         /* orange */
-    font-weight: 900;       /* even bolder */
-    font-size: 72px;        /* slightly bigger */
+    font-weight: 800;       /* even bolder */
+    font-size: 68px;        /* slightly bigger */
     border-right: 3px solid #ff8800;
     padding-right: 5px;
     animation: blink 0.7s infinite;
