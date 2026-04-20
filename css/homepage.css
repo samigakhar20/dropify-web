@@ -111,7 +111,7 @@ body {
 .navbar {
     background: #111;
     padding: 15px 40px;
-    max-height: 20px;
+    max-height: 40px;
     display: flex;
     justify-content: space-between;
     align-items: center;
