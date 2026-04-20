@@ -268,7 +268,7 @@ body {
 }
 
 .typing-text {
-    font-size: 30px;
+    font-size: 28px;
     font-weight: 600;
     margin-top: 20px;
 }
@@ -295,7 +295,7 @@ body {
 
 /* MAIN STATIC TEXT */
 .typing-text {
-    font-size: 74px;        /* bigger */
+    font-size: 70px;        /* bigger */
     font-weight: 800;       /* extra bold */
     color: #fff;            /* white */
 }
@@ -304,7 +304,7 @@ body {
 #typewriter {
     color: #ff8800;         /* orange */
     font-weight: 900;       /* even bolder */
-    font-size: 76px;        /* slightly bigger */
+    font-size: 72px;        /* slightly bigger */
     border-right: 3px solid #ff8800;
     padding-right: 5px;
     animation: blink 0.7s infinite;
