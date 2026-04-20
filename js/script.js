@@ -14,7 +14,7 @@ closeBtn.addEventListener("click", () => {
 
 const texts = [
     "Leader of local dropshipping",
-    "Innovating local dropshipping"
+    "Spark of Dropshipping"
 ];
 
 let index = 0;
